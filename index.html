@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>라떼 문구점</title>
+
+  <style>
+    /* 기본 설정 */
+    body {
+      margin: 0;
+      font-family: "맑은 고딕", sans-serif;
+      background-color: #f4fbff;
+      color: #33475b;
+    }
+
+    /* 맨 위 (헤더) */
+    header {
+      background-color: #bfe6ff;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 34px;
+    }
+    header p {
+      margin: 8px 0 0;
+      font-size: 15px;
+    }
+
+    /* 메뉴 */
+    nav {
+      background-color: #ffffff;
+      text-align: center;
+      padding: 15px;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #33475b;
+      font-weight: bold;
+    }
+
+    /* 큰 배너 */
+    .banner {
+      background-color: #d9f0ff;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .banner h2 {
+      font-size: 28px;
+      margin: 0 0 10px;
+    }
+    .banner p {
+      margin: 0 0 25px;
+    }
+
+    /* 버튼 */
+    button {
+      background-color: #7fc8f8;
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    /* 카테고리 버튼 */
+    .category {
+      text-align: center;
+      padding: 40px 20px 0;
+    }
+    .category button {
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      margin: 5px;
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      opacity: 0.4;          /* 선택 안 된 버튼은 흐리게 */
+    }
+
+    /* 지금 선택된 버튼 */
+    .category button.on {
+      opacity: 1;            /* 진하게 */
+      transform: scale(1.1); /* 살짝 크게 */
+      box-shadow: 0 4px 10px #d6e8f5;
+    }
+
+    /* 버튼마다 색이 다릅니다 */
+    .cat-all   { background-color: #7fc8f8; }
+    .cat-pen   { background-color: #ff9db1; }
+    .cat-paper { background-color: #ffc978; }
+    .cat-art   { background-color: #8fd6b4; }
+    .cat-etc   { background-color: #b8a6e8; }
+
+    /* 상품 목록 */
+    .products {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 25px 20px 50px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 20px;
+      width: 200px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 3px 10px #dceefc;
+      position: relative;
+    }
+
+    /* 마우스를 올리면 살짝 떠오릅니다 */
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px #cfe8fa;
+    }
+
+    /* 할인율 배지 */
+    .badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background-color: #ff7aa2;
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 12px;
+    }
+    /* 베스트 상품 배지 (오른쪽 위, 하트 모양) */
+    .best {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 52px;
+      height: 48px;
+      background-color: #ff7aa2;
+      /* 하트 모양으로 잘라냅니다 */
+      clip-path: path('M26,45 C6,31 2,18 9,11 C16,4 26,9 26,16 C26,9 36,4 43,11 C50,18 46,31 26,45 Z');
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      text-align: center;
+      padding-top: 14px;
+      box-sizing: border-box;
+    }
+
+    /* 이모지 그림 상자 */
+    .emoji {
+      font-size: 65px;
+      line-height: 140px;
+      background: linear-gradient(#eaf7ff, #fdf0f5);
+      border-radius: 15px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin: 15px 0 8px;
+    }
+    .price {
+      color: #ff7aa2;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .old-price {
+      color: #aaaaaa;
+      text-decoration: line-through;
+      font-size: 14px;
+      margin-top: 0;
+    }
+
+    /* 담기 버튼 */
+    .buy {
+      background-color: #eaf7ff;
+      color: #4aa3d8;
+      border: none;
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .buy:hover {
+      background-color: #7fc8f8;
+      color: white;
+    }
+
+    /* 맨 아래 (푸터) */
+    footer {
+      background-color: #bfe6ff;
+      text-align: center;
+      padding: 25px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 맨 위: 쇼핑몰 이름 + 한 줄 소개 -->
+  <header>
+    <h1>☕ 청소년 문구점</h1>
+    <p>공부가 즐거워지는 귀여운 학생 문구점 ✏️</p>
+  </header>
+
+  <!-- 메뉴 4개 -->
+  <nav>
+    <a href="#">홈</a>
+    <a href="#">신상품</a>
+    <a href="#">인기상품</a>
+    <a href="#">고객센터</a>
+  </nav>
+
+  <!-- 큰 배너 -->
+  <div class="banner">
+    <h2>새 학기 맞이 최대 40% 할인!</h2>
+    <p>귀여운 문구로 책상 위를 꾸며보세요 💙</p>
+    <button onclick="showAlert()">지금 구경하기</button>
+  </div>
+
+  <!-- 카테고리 버튼 -->
+  <div class="category">
+    <button class="cat-all on" onclick="showCategory('all', this)">전체</button>
+    <button class="cat-pen"    onclick="showCategory('pen', this)">✏️ 필기구</button>
+    <button class="cat-paper"  onclick="showCategory('paper', this)">📒 노트·종이</button>
+    <button class="cat-art"    onclick="showCategory('art', this)">🎨 미술용품</button>
+    <button class="cat-etc"    onclick="showCategory('etc', this)">🧰 기타용품</button>
+  </div>
+
+  <!-- 상품 카드 8개 -->
+  <div class="products">
+
+    <div class="card pen">
+      <span class="best">BEST</span>
+      <span class="badge">30% 할인</span>
+      <div class="emoji">✏️</div>
+      <h3>파스텔 연필 세트</h3>
+      <p class="price">3,500원</p>
+      <p class="old-price">5,000원</p>
+      <button class="buy" onclick="addCart('파스텔 연필 세트')">장바구니 담기 🛒</button>
+    </div>
+
+    <div class="card paper">
+      <span class="badge">30% 할인</span>
+      <div class="emoji">📒</div>
+      <h3>구름 무늬 노트</h3>
+      <p class="price">4,200원</p>
+      <p class="old-price">6,000원</p>
+      <button class="buy" onclick="addCart('구름 무늬 노트')">장바구니 담기 🛒</button>
+    </div>
+
+    <div class="card pen">
+      <span class="badge">26% 할인</span>
+      <div class="emoji">🖊️</div>
+      <h3>말랑 형광펜 5색</h3>
+      <p class="price">5,900원</p>
+      <p class="old-price">8,000원</p>
+      <button class="buy" onclick="addCart('말랑 형광펜 5색')">장바구니 담기 🛒</button>
+    </div>
+
+    <div class="card art">
+      <span class="badge">25% 할인</span>
+      <div class="emoji">🖍️</div>
+      <h3>말랑 크레파스 12색</h3>
+      <p class="price">6,000원</p>
+      <p class="old-price">8,000원</p>
+      <button class="buy" onclick="addCart('말랑 크레파스 12색')">장바구니 담기 🛒</button>
+    </div>
+
+    <div class="card etc">
+      <span class="badge">20% 할인</span>
+      <div class="emoji">🧽</div>
+      <h3>말랑 지우개 3개입</h3>
+      <p class="price">2,400원</p>
+      <p class="old-price">3,000원</p>
+      <button class="buy" onclick="addCart('말랑 지우개 3개입')">장바구니 담기 🛒</button>
+    </div>
+
+    <div class="card paper">
+      <span class="badge">15% 할인</span>
+      <div class="emoji">📄</div>
+      <h3>A4 복사지 500매</h3>
+      <p class="price">4,250원</p>
+      <p class="old-price">5,000원</p>
+      <button class="buy" onclick="addCart('A4 복사지 500매')">장바구니 담기 🛒</button>
+    </div>
+
+    <div class="card etc">
+      <span class="badge">28% 할인</span>
+      <div class="emoji">📏</div>
+      <h3>스카치테이프 2개입</h3>
+      <p class="price">1,800원</p>
+      <p class="old-price">2,500원</p>
+      <button class="buy" onclick="addCart('스카치테이프 2개입')">장바구니 담기 🛒</button>
+    </div>
+
+    <div class="card pen">
+      <span class="badge">22% 할인</span>
+      <div class="emoji">🖊</div>
+      <h3>샤프심 0.5mm 5통</h3>
+      <p class="price">2,700원</p>
+      <p class="old-price">3,500원</p>
+      <button class="buy" onclick="addCart('샤프심 0.5mm 5통')">장바구니 담기 🛒</button>
+    </div>
+
+  </div>
+
+  <!-- 맨 아래: 연락처 -->
+  <footer>
+    <p>📞 010-1234-5678 &nbsp; | &nbsp; ✉️ latte@shop.com</p>
+    <p>© 2026 라떼 문구점</p>
+  </footer>
+
+  <script>
+    // 배너 버튼을 누르면 알림창이 뜹니다.
+    function showAlert() {
+      alert("환영합니다! 라떼 문구점 신상품을 구경해 보세요 😊");
+    }
+
+    // 장바구니 버튼을 누르면 상품 이름이 나옵니다.
+    function addCart(name) {
+      alert(name + " 을(를) 장바구니에 담았어요! 🛒");
+    }
+
+    // 카테고리 버튼을 누르면 그 분류의 상품만 보입니다.
+    function showCategory(cat, btn) {
+      // 1) 모든 버튼을 흐리게 만든 뒤, 누른 버튼만 진하게 합니다.
+      var buttons = document.querySelectorAll(".category button");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("on");
+      }
+      btn.classList.add("on");
+
+      // 2) 해당 분류의 상품만 보여줍니다.
+      var cards = document.querySelectorAll(".card");
+      for (var i = 0; i < cards.length; i++) {
+        if (cat === "all" || cards[i].classList.contains(cat)) {
+          cards[i].style.display = "block";   // 보이기
+        } else {
+          cards[i].style.display = "none";    // 숨기기
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
