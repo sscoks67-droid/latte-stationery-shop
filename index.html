@@ -146,6 +146,12 @@
       position: relative;
     }
 
+    /* 분류마다 어울리는 테두리 색 */
+    .card.pen   { border: 3px solid #ff9db1; }   /* 필기구 - 분홍 */
+    .card.paper { border: 3px solid #ffc978; }   /* 노트·종이 - 주황 */
+    .card.art   { border: 3px solid #8fd6b4; }   /* 미술용품 - 초록 */
+    .card.etc   { border: 3px solid #b8a6e8; }   /* 기타용품 - 보라 */
+
     /* 마우스를 올리면 살짝 떠오릅니다 */
     .card:hover {
       transform: translateY(-8px);
@@ -213,12 +219,22 @@
     }
     }
 
-    /* 이모지 그림 상자 */
+    /* 이모지 그림 상자 (지금은 사진을 쓰지만, 다시 이모지로 바꿀 때 필요합니다) */
     .emoji {
       font-size: 65px;
       line-height: 140px;
       background: linear-gradient(#eaf7ff, #fdf0f5);
       border-radius: 15px;
+    }
+
+    /* 상품 사진 */
+    .photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;   /* 가로:세로 = 10:10 (정사각형) */
+      object-fit: cover;
+      border-radius: 15px;
+      background: linear-gradient(#eaf7ff, #fdf0f5);
+      display: block;
     }
 
     .card h3 {
@@ -372,7 +388,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="best">BEST</span>
       <span class="badge">30% 할인</span>
-      <div class="emoji">✏️</div>
+      <img class="photo" src="https://loremflickr.com/400/400/pencils?lock=11" alt="파스텔 연필 세트">
       <h3>파스텔 연필 세트</h3>
       <p class="price">3,500원</p>
       <p class="old-price">5,000원</p>
@@ -382,7 +398,7 @@
     <div class="card paper">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">30% 할인</span>
-      <div class="emoji">📒</div>
+      <img class="photo" src="https://loremflickr.com/400/400/notebook?lock=12" alt="구름 무늬 노트">
       <h3>구름 무늬 노트</h3>
       <p class="price">4,200원</p>
       <p class="old-price">6,000원</p>
@@ -392,7 +408,7 @@
     <div class="card pen">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">26% 할인</span>
-      <div class="emoji">🖊️</div>
+      <img class="photo" src="https://loremflickr.com/400/400/highlighter?lock=13" alt="말랑 형광펜 5색">
       <h3>말랑 형광펜 5색</h3>
       <p class="price">5,900원</p>
       <p class="old-price">8,000원</p>
@@ -402,7 +418,7 @@
     <div class="card art">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">25% 할인</span>
-      <div class="emoji">🖍️</div>
+      <img class="photo" src="https://loremflickr.com/400/400/crayons?lock=14" alt="말랑 크레파스 12색">
       <h3>말랑 크레파스 12색</h3>
       <p class="price">6,000원</p>
       <p class="old-price">8,000원</p>
@@ -412,7 +428,7 @@
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">20% 할인</span>
-      <div class="emoji">🧽</div>
+      <img class="photo" src="https://loremflickr.com/400/400/eraser?lock=15" alt="말랑 지우개 3개입">
       <h3>말랑 지우개 3개입</h3>
       <p class="price">2,400원</p>
       <p class="old-price">3,000원</p>
@@ -422,7 +438,7 @@
     <div class="card paper">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">15% 할인</span>
-      <div class="emoji">📄</div>
+      <img class="photo" src="https://loremflickr.com/400/400/paper?lock=16" alt="A4 복사지 500매">
       <h3>A4 복사지 500매</h3>
       <p class="price">4,250원</p>
       <p class="old-price">5,000원</p>
@@ -432,7 +448,7 @@
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">28% 할인</span>
-      <div class="emoji">📏</div>
+      <img class="photo" src="https://loremflickr.com/400/400/tape?lock=17" alt="스카치테이프 2개입">
       <h3>스카치테이프 2개입</h3>
       <p class="price">1,800원</p>
       <p class="old-price">2,500원</p>
@@ -442,7 +458,7 @@
     <div class="card pen">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">22% 할인</span>
-      <div class="emoji">🖊</div>
+      <img class="photo" src="https://loremflickr.com/400/400/pencil?lock=18" alt="샤프심 0.5mm 5통">
       <h3>샤프심 0.5mm 5통</h3>
       <p class="price">2,700원</p>
       <p class="old-price">3,500원</p>
@@ -452,7 +468,7 @@
     <div class="card pen">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">24% 할인</span>
-      <div class="emoji">🖋️</div>
+      <img class="photo" src="https://loremflickr.com/400/400/pen?lock=19" alt="파스텔 볼펜 5색">
       <h3>파스텔 볼펜 5색</h3>
       <p class="price">3,800원</p>
       <p class="old-price">5,000원</p>
@@ -462,7 +478,7 @@
     <div class="card paper">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">18% 할인</span>
-      <div class="emoji">📓</div>
+      <img class="photo" src="https://loremflickr.com/400/400/diary?lock=20" alt="몽글 다이어리">
       <h3>몽글 다이어리</h3>
       <p class="price">9,800원</p>
       <p class="old-price">12,000원</p>
@@ -472,7 +488,7 @@
     <div class="card paper">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">20% 할인</span>
-      <div class="emoji">📝</div>
+      <img class="photo" src="https://loremflickr.com/400/400/notepad?lock=21" alt="떡메모지 100매">
       <h3>떡메모지 100매</h3>
       <p class="price">2,800원</p>
       <p class="old-price">3,500원</p>
@@ -482,7 +498,7 @@
     <div class="card art">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">27% 할인</span>
-      <div class="emoji">🎨</div>
+      <img class="photo" src="https://loremflickr.com/400/400/watercolor?lock=22" alt="수채화 물감 12색">
       <h3>수채화 물감 12색</h3>
       <p class="price">8,000원</p>
       <p class="old-price">11,000원</p>
@@ -492,7 +508,7 @@
     <div class="card art">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">23% 할인</span>
-      <div class="emoji">🖌️</div>
+      <img class="photo" src="https://loremflickr.com/400/400/paintbrush?lock=23" alt="그림 붓 3종 세트">
       <h3>그림 붓 3종 세트</h3>
       <p class="price">4,600원</p>
       <p class="old-price">6,000원</p>
@@ -502,7 +518,7 @@
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">30% 할인</span>
-      <div class="emoji">📐</div>
+      <img class="photo" src="https://loremflickr.com/400/400/ruler?lock=24" alt="삼각자 3종 세트">
       <h3>삼각자 3종 세트</h3>
       <p class="price">2,100원</p>
       <p class="old-price">3,000원</p>
@@ -512,7 +528,7 @@
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">25% 할인</span>
-      <div class="emoji">✂️</div>
+      <img class="photo" src="https://loremflickr.com/400/400/scissors?lock=25" alt="안전 가위">
       <h3>안전 가위</h3>
       <p class="price">3,000원</p>
       <p class="old-price">4,000원</p>
@@ -522,7 +538,7 @@
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">21% 할인</span>
-      <div class="emoji">📎</div>
+      <img class="photo" src="https://loremflickr.com/400/400/paperclip?lock=26" alt="클립·집게 세트">
       <h3>클립·집게 세트</h3>
       <p class="price">1,900원</p>
       <p class="old-price">2,400원</p>
@@ -532,7 +548,7 @@
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">26% 할인</span>
-      <div class="emoji">🔖</div>
+      <img class="photo" src="https://loremflickr.com/400/400/bookmark?lock=27" alt="하트 책갈피 5개">
       <h3>하트 책갈피 5개</h3>
       <p class="price">2,200원</p>
       <p class="old-price">3,000원</p>
@@ -542,7 +558,7 @@
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">19% 할인</span>
-      <div class="emoji">👝</div>
+      <img class="photo" src="https://loremflickr.com/400/400/pencilcase?lock=28" alt="곰돌이 필통">
       <h3>곰돌이 필통</h3>
       <p class="price">6,500원</p>
       <p class="old-price">8,000원</p>
