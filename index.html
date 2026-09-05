@@ -134,11 +134,11 @@
       padding: 5px 10px;
       border-radius: 12px;
     }
-    /* 베스트 상품 배지 (오른쪽 위, 하트 모양) */
+    /* 베스트 상품 배지 (왼쪽 아래, 하트 모양) */
     .best {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 44px;
+      left: 8px;
       width: 52px;
       height: 48px;
       background-color: #ff7aa2;
@@ -150,6 +150,37 @@
       text-align: center;
       padding-top: 14px;
       box-sizing: border-box;
+    }
+
+    /* 찜하기 하트 버튼 (오른쪽 위) */
+    .wish {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 26px;
+      line-height: 1;
+      color: #ffc2d1;
+      cursor: pointer;
+    }
+    /* 찜한 상태 */
+    .wish.on {
+      color: #ff4d79;
+    }
+
+    /* 헤더의 찜 개수 */
+    .wish-count {
+      display: inline-block;
+      background-color: white;
+      color: #ff4d79;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-top: 12px;
+    }
     }
 
     /* 이모지 그림 상자 */
@@ -271,6 +302,7 @@
   <header>
     <h1>☕ 청소년 문구점</h1>
     <p>공부가 즐거워지는 귀여운 학생 문구점 ✏️</p>
+    <p class="wish-count">찜한 상품 <span id="wishCount">0</span>개 💗</p>
   </header>
 
   <!-- 메뉴 4개 -->
@@ -301,6 +333,7 @@
   <div class="products">
 
     <div class="card pen">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="best">BEST</span>
       <span class="badge">30% 할인</span>
       <div class="emoji">✏️</div>
@@ -311,6 +344,7 @@
     </div>
 
     <div class="card paper">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">30% 할인</span>
       <div class="emoji">📒</div>
       <h3>구름 무늬 노트</h3>
@@ -320,6 +354,7 @@
     </div>
 
     <div class="card pen">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">26% 할인</span>
       <div class="emoji">🖊️</div>
       <h3>말랑 형광펜 5색</h3>
@@ -329,6 +364,7 @@
     </div>
 
     <div class="card art">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">25% 할인</span>
       <div class="emoji">🖍️</div>
       <h3>말랑 크레파스 12색</h3>
@@ -338,6 +374,7 @@
     </div>
 
     <div class="card etc">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">20% 할인</span>
       <div class="emoji">🧽</div>
       <h3>말랑 지우개 3개입</h3>
@@ -347,6 +384,7 @@
     </div>
 
     <div class="card paper">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">15% 할인</span>
       <div class="emoji">📄</div>
       <h3>A4 복사지 500매</h3>
@@ -356,6 +394,7 @@
     </div>
 
     <div class="card etc">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">28% 할인</span>
       <div class="emoji">📏</div>
       <h3>스카치테이프 2개입</h3>
@@ -365,6 +404,7 @@
     </div>
 
     <div class="card pen">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">22% 할인</span>
       <div class="emoji">🖊</div>
       <h3>샤프심 0.5mm 5통</h3>
@@ -374,6 +414,7 @@
     </div>
 
     <div class="card pen">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">24% 할인</span>
       <div class="emoji">🖋️</div>
       <h3>파스텔 볼펜 5색</h3>
@@ -383,6 +424,7 @@
     </div>
 
     <div class="card paper">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">18% 할인</span>
       <div class="emoji">📓</div>
       <h3>몽글 다이어리</h3>
@@ -392,6 +434,7 @@
     </div>
 
     <div class="card paper">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">20% 할인</span>
       <div class="emoji">📝</div>
       <h3>떡메모지 100매</h3>
@@ -401,6 +444,7 @@
     </div>
 
     <div class="card art">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">27% 할인</span>
       <div class="emoji">🎨</div>
       <h3>수채화 물감 12색</h3>
@@ -410,6 +454,7 @@
     </div>
 
     <div class="card art">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">23% 할인</span>
       <div class="emoji">🖌️</div>
       <h3>그림 붓 3종 세트</h3>
@@ -419,6 +464,7 @@
     </div>
 
     <div class="card etc">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">30% 할인</span>
       <div class="emoji">📐</div>
       <h3>삼각자 3종 세트</h3>
@@ -428,6 +474,7 @@
     </div>
 
     <div class="card etc">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">25% 할인</span>
       <div class="emoji">✂️</div>
       <h3>안전 가위</h3>
@@ -437,6 +484,7 @@
     </div>
 
     <div class="card etc">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">21% 할인</span>
       <div class="emoji">📎</div>
       <h3>클립·집게 세트</h3>
@@ -446,6 +494,7 @@
     </div>
 
     <div class="card etc">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">26% 할인</span>
       <div class="emoji">🔖</div>
       <h3>하트 책갈피 5개</h3>
@@ -455,6 +504,7 @@
     </div>
 
     <div class="card etc">
+      <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="badge">19% 할인</span>
       <div class="emoji">👝</div>
       <h3>곰돌이 필통</h3>
@@ -543,6 +593,25 @@
           cards[i].style.display = "none";    // 숨기기
         }
       }
+    }
+
+    // 하트를 누르면 찜하기가 켜지고, 다시 누르면 풀립니다.
+    function toggleWish(btn) {
+      btn.classList.toggle("on");   // 켜져 있으면 끄고, 꺼져 있으면 켭니다
+
+      if (btn.classList.contains("on")) {
+        btn.textContent = "♥";      // 꽉 찬 하트
+      } else {
+        btn.textContent = "♡";      // 빈 하트
+      }
+
+      countWish();
+    }
+
+    // 찜한 상품이 몇 개인지 세어서 맨 위에 보여줍니다.
+    function countWish() {
+      var n = document.querySelectorAll(".wish.on").length;
+      document.getElementById("wishCount").textContent = n;
     }
   </script>
 
