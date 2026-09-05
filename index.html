@@ -67,10 +67,40 @@
       cursor: pointer;
     }
 
+    /* 검색창 */
+    .search {
+      text-align: center;
+      padding: 40px 20px 0;
+    }
+    .search input {
+      width: 100%;
+      max-width: 420px;
+      padding: 14px 20px;
+      font-size: 15px;
+      border: 2px solid #bfe6ff;
+      border-radius: 25px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .search input:focus {
+      border-color: #7fc8f8;
+    }
+
+    /* 찾는 상품이 없을 때 안내문 */
+    .no-result {
+      display: none;          /* 평소에는 숨겨둡니다 */
+      text-align: center;
+      font-size: 16px;
+      color: #6b7f92;
+      line-height: 1.8;
+      padding: 30px 20px 60px;
+      margin: 0;
+    }
+
     /* 카테고리 버튼 */
     .category {
       text-align: center;
-      padding: 40px 20px 0;
+      padding: 20px 20px 0;
     }
     .category button {
       color: white;
@@ -320,6 +350,12 @@
     <button onclick="showAlert()">지금 구경하기</button>
   </div>
 
+  <!-- 검색창 -->
+  <div class="search">
+    <input type="text" id="searchBox" oninput="searchProduct()"
+           placeholder="🔍 찾는 문구를 입력해 보세요 (예: 연필)">
+  </div>
+
   <!-- 카테고리 버튼 -->
   <div class="category">
     <button class="cat-all on" onclick="showCategory('all', this)">전체</button>
@@ -515,6 +551,11 @@
 
   </div>
 
+  <!-- 찾는 상품이 없을 때 보이는 안내문 -->
+  <p class="no-result" id="noResult">
+    😢 찾으시는 상품이 없어요.<br>다른 이름으로 검색해 보세요!
+  </p>
+
   <!-- 쇼핑몰 소개 -->
   <div class="intro">
     <h2>라떼 문구점을 소개합니다 💙</h2>
@@ -592,6 +633,42 @@
         } else {
           cards[i].style.display = "none";    // 숨기기
         }
+      }
+
+      // 3) 검색어와 안내문은 지웁니다.
+      document.getElementById("searchBox").value = "";
+      document.getElementById("noResult").style.display = "none";
+    }
+
+    // 검색창에 글자를 칠 때마다 실행됩니다.
+    function searchProduct() {
+      var word = document.getElementById("searchBox").value.trim().toLowerCase();
+      var cards = document.querySelectorAll(".card");
+      var found = 0;   // 찾은 상품 개수
+
+      for (var i = 0; i < cards.length; i++) {
+        var name = cards[i].querySelector("h3").textContent.toLowerCase();
+
+        if (name.indexOf(word) !== -1) {
+          cards[i].style.display = "block";   // 글자가 들어있으면 보이기
+          found++;
+        } else {
+          cards[i].style.display = "none";    // 없으면 숨기기
+        }
+      }
+
+      // 검색할 때는 카테고리를 '전체'로 되돌립니다.
+      var buttons = document.querySelectorAll(".category button");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("on");
+      }
+      document.querySelector(".cat-all").classList.add("on");
+
+      // 찾은 상품이 하나도 없으면 안내문을 보여줍니다.
+      if (found === 0) {
+        document.getElementById("noResult").style.display = "block";
+      } else {
+        document.getElementById("noResult").style.display = "none";
       }
     }
 
