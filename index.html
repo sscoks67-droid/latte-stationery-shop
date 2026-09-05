@@ -363,7 +363,7 @@
   <div class="banner">
     <h2>새 학기 맞이 최대 40% 할인!</h2>
     <p>귀여운 문구로 책상 위를 꾸며보세요 💙</p>
-    <button onclick="showAlert()">지금 구경하기</button>
+    <button onclick="showWish()">지금 구경하기</button>
   </div>
 
   <!-- 검색창 -->
@@ -622,9 +622,40 @@
   </footer>
 
   <script>
-    // 배너 버튼을 누르면 알림창이 뜹니다.
-    function showAlert() {
-      alert("환영합니다! 라떼 문구점 신상품을 구경해 보세요 😊");
+    // 배너 버튼을 누르면 찜한 상품만 보여줍니다.
+    function showWish() {
+      var cards = document.querySelectorAll(".card");
+      var found = 0;   // 찜한 상품 개수
+
+      for (var i = 0; i < cards.length; i++) {
+        var heart = cards[i].querySelector(".wish");
+
+        if (heart.classList.contains("on")) {
+          cards[i].style.display = "block";   // 찜한 상품만 보이기
+          found++;
+        } else {
+          cards[i].style.display = "none";
+        }
+      }
+
+      // 검색어를 지우고 카테고리 선택도 모두 풉니다.
+      document.getElementById("searchBox").value = "";
+      var buttons = document.querySelectorAll(".category button");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("on");
+      }
+
+      // 찜한 상품이 없으면 안내문을 보여줍니다.
+      var msg = document.getElementById("noResult");
+      if (found === 0) {
+        msg.innerHTML = "💗 아직 찜한 상품이 없어요.<br>하트를 눌러 마음에 드는 상품을 담아보세요!";
+        msg.style.display = "block";
+      } else {
+        msg.style.display = "none";
+      }
+
+      // 상품 목록으로 부드럽게 내려갑니다.
+      document.querySelector(".products").scrollIntoView({ behavior: "smooth" });
     }
 
     // 장바구니 버튼을 누르면 상품 이름이 나옵니다.
@@ -681,10 +712,12 @@
       document.querySelector(".cat-all").classList.add("on");
 
       // 찾은 상품이 하나도 없으면 안내문을 보여줍니다.
+      var msg = document.getElementById("noResult");
       if (found === 0) {
-        document.getElementById("noResult").style.display = "block";
+        msg.innerHTML = "😢 찾으시는 상품이 없어요.<br>다른 이름으로 검색해 보세요!";
+        msg.style.display = "block";
       } else {
-        document.getElementById("noResult").style.display = "none";
+        msg.style.display = "none";
       }
     }
 
