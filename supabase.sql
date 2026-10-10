@@ -124,3 +124,56 @@ create policy wi_delete on public.wish_items for delete to anon using (true);
 --   select p.name, count(*) as 찜수
 --   from public.wish_items w join public.products p on p.id = w.product_id
 --   group by p.name order by 찜수 desc;
+
+
+-- ============================================================
+--  주문 표  (2026-10-10 실행 완료)
+--  ★ 주문서에는 이름·연락처·주소 같은 개인정보가 들어갑니다.
+--    그래서 공개 키로는 읽지도 쓰지도 못하게 막고,
+--    로그인한 본인만 자기 주문을 저장·조회할 수 있게 했습니다.
+-- ============================================================
+
+create table if not exists public.orders (
+  id            uuid primary key default gen_random_uuid(),   -- 주문번호
+  user_id       uuid not null references auth.users(id) on delete cascade,
+  receiver_name text not null,      -- 받는 사람 이름
+  receiver_tel  text not null,      -- 연락처
+  address       text not null,      -- 주소 (한 칸에 전부)
+  items_total   int  not null,      -- 상품 총금액
+  shipping_fee  int  not null,      -- 배송비
+  pay_total     int  not null,      -- 전체 합계 금액
+  status        text not null default '접수',
+  created_at    timestamptz not null default now()
+);
+
+create table if not exists public.order_items (
+  order_id   uuid not null references public.orders(id) on delete cascade,
+  product_id int  not null references public.products(id),
+  name       text not null,         -- 주문 당시의 상품 이름
+  price      int  not null,         -- 주문 당시의 값 (나중에 값이 바뀌어도 그대로)
+  count      int  not null check (count > 0),
+  primary key (order_id, product_id)
+);
+
+alter table public.orders      enable row level security;
+alter table public.order_items enable row level security;
+
+drop policy if exists o_read   on public.orders;
+drop policy if exists o_insert on public.orders;
+drop policy if exists oi_read   on public.order_items;
+drop policy if exists oi_insert on public.order_items;
+
+-- 로그인한 본인 주문만
+create policy o_read   on public.orders for select to authenticated using (user_id = auth.uid());
+create policy o_insert on public.orders for insert to authenticated with check (user_id = auth.uid());
+
+create policy oi_read on public.order_items for select to authenticated
+  using (exists (select 1 from public.orders o where o.id = order_id and o.user_id = auth.uid()));
+create policy oi_insert on public.order_items for insert to authenticated
+  with check (exists (select 1 from public.orders o where o.id = order_id and o.user_id = auth.uid()));
+
+-- 가게 주인이 주문을 보려면 대시보드에서 (대시보드는 RLS 를 넘어 볼 수 있습니다)
+--   select o.created_at, o.receiver_name, o.receiver_tel, o.address, o.pay_total,
+--          string_agg(i.name || ' ' || i.count || '개', ', ') as 상품
+--   from public.orders o join public.order_items i on i.order_id = o.id
+--   group by o.id order by o.created_at desc;

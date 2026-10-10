@@ -355,6 +355,211 @@
       color: white;
     }
 
+    /* ===== 주문서 페이지 ===== */
+    .order-page {
+      display: none;            /* 평소에는 숨겨둡니다 */
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 45px 20px 70px;
+    }
+    .order-page h2 {
+      font-size: 26px;
+      margin: 0 0 6px;
+      text-align: center;
+    }
+
+    /* 받는 분 정보 입력 상자 */
+    .order-box {
+      background-color: white;
+      border-radius: 20px;
+      padding: 26px 24px;
+      box-shadow: 0 3px 10px #dceefc;
+    }
+    .order-box h3 {
+      margin: 0 0 20px;
+      font-size: 18px;
+      color: #4aa3d8;
+      text-align: center;
+    }
+    .order-box label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      color: #6b7f92;
+      margin-bottom: 16px;
+    }
+    .order-box input,
+    .order-box textarea {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      color: #33475b;
+      border: 2px solid #e4f1fb;
+      border-radius: 12px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .order-box textarea {
+      height: 84px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .order-box input:focus,
+    .order-box textarea:focus {
+      border-color: #7fc8f8;
+    }
+    .order-hint {
+      font-size: 12px;
+      font-weight: normal;
+      color: #9aabbb;
+      margin-top: 5px;
+    }
+
+    /* 안 적은 칸은 분홍 테두리로 짚어줍니다 */
+    .order-box .empty {
+      border-color: #ff7aa2;
+      background-color: #fff7fa;
+    }
+    /* 그 칸 바로 아래에 나오는 안내 */
+    .field-msg {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #ff4d79;
+    }
+
+    /* 주문 상품 요약 */
+    .order-list {
+      background-color: white;
+      border-radius: 20px;
+      padding: 6px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px #dceefc;
+    }
+    .order-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px dashed #dceefc;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .order-line:last-child {
+      border-bottom: none;
+    }
+    .order-line img {
+      width: 34px;
+      height: 34px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex: none;
+    }
+    .order-line .n {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .order-line .c {
+      flex: none;
+      color: #8fa2b4;
+    }
+    .order-line .a {
+      flex: none;
+      width: 90px;
+      text-align: right;
+      color: #ff7aa2;
+      font-weight: bold;
+    }
+
+    /* 주문서 안내 글 */
+    .order-msg {
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 18px 0 0;
+      min-height: 20px;
+      color: #ff4d79;
+      white-space: pre-line;   /* 줄바꿈을 그대로 보여줍니다 */
+    }
+    .order-msg.ok {
+      color: #4aa3d8;
+    }
+
+    /* ===== 주문 확인 페이지 ===== */
+    .confirm-page {
+      display: none;            /* 평소에는 숨겨둡니다 */
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 45px 20px 70px;
+    }
+    .confirm-page h2 {
+      font-size: 26px;
+      margin: 0 0 6px;
+      text-align: center;
+    }
+    /* 흰 상자 (받는 분 / 주문 상품) */
+    .confirm-box {
+      background-color: white;
+      border-radius: 20px;
+      padding: 10px 24px 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px #dceefc;
+    }
+    .confirm-box h3 {
+      margin: 16px 0 6px;
+      font-size: 16px;
+      color: #4aa3d8;
+    }
+    /* 받는 분 한 줄 (이름 / 내용) */
+    .confirm-row {
+      display: flex;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px dashed #dceefc;
+      font-size: 14px;
+    }
+    .confirm-row:last-child {
+      border-bottom: none;
+    }
+    .confirm-row b {
+      width: 96px;
+      flex: none;
+      color: #8fa2b4;
+      font-size: 13px;
+    }
+    .confirm-row span {
+      flex: 1;
+      color: #33475b;
+      line-height: 1.6;
+      word-break: keep-all;
+      white-space: pre-line;    /* 주소의 줄바꿈을 그대로 보여줍니다 */
+    }
+    /* 이대로 주문하시겠습니까? */
+    .confirm-ask {
+      text-align: center;
+      font-size: 17px;
+      font-weight: bold;
+      color: #33475b;
+      margin: 26px 0 0;
+    }
+    /* 주문하기를 누른 뒤 나오는 안내 */
+    .confirm-msg {
+      white-space: pre-line;   /* 줄바꿈을 그대로 보여줍니다 */
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+      color: #4aa3d8;
+      line-height: 1.7;
+      margin: 16px 0 0;
+      min-height: 22px;
+    }
+
     /* ===== 회원가입 · 로그인 페이지 ===== */
     .auth-page {
       display: none;            /* 평소에는 숨겨둡니다 */
@@ -1028,6 +1233,111 @@
 
   </div>
   <!-- ===== 상품 목록 화면 끝 ===== -->
+
+  <!-- ===== 주문서 페이지 ===== -->
+  <div class="order-page" id="orderPage">
+    <h2>📝 주문서</h2>
+    <p class="cart-hint">받는 분 정보를 적어주세요.</p>
+
+    <!-- 주문할 상품 (장바구니 내용을 보여주기만 합니다) -->
+    <div class="order-list" id="orderList"></div>
+
+    <!-- 금액 -->
+    <div class="cart-sum">
+      <div class="cart-sum-row">
+        <span>상품 총금액</span>
+        <span><span id="orderTotal">0</span>원</span>
+      </div>
+      <div class="cart-sum-row">
+        <span>배송비</span>
+        <span><span id="orderShip">0</span>원</span>
+      </div>
+      <div class="cart-sum-row total">
+        <span>결제 금액</span>
+        <b><span id="orderPay">0</span>원</b>
+      </div>
+    </div>
+
+    <!-- 받는 분 정보 -->
+    <div class="order-box" style="margin-top: 22px;">
+      <h3>받는 분</h3>
+
+      <label>받는 사람 이름
+        <input type="text" id="orderName" placeholder="예) 김라떼" oninput="clearField('Name')">
+        <span class="field-msg" id="msgName"></span>
+      </label>
+
+      <label>연락처
+        <input type="tel" id="orderTel" placeholder="예) 010-1234-5678" oninput="clearField('Tel')">
+        <span class="field-msg" id="msgTel"></span>
+      </label>
+
+      <label>주소
+        <textarea id="orderAddr" placeholder="예) 서울시 강남구 테헤란로 123 라떼아파트 101동 1001호" oninput="clearField('Addr')"></textarea>
+        <span class="order-hint">도로명 주소와 상세 주소를 한 칸에 모두 적어주세요.</span>
+        <span class="field-msg" id="msgAddr"></span>
+      </label>
+    </div>
+
+    <p class="order-msg" id="orderMsg"></p>
+
+    <!-- 아래 버튼 -->
+    <div class="cart-buttons">
+      <button class="btn-keep"  onclick="openCart()">◀ 장바구니로</button>
+      <button class="btn-order" onclick="submitOrder()">다음 ▶</button>
+    </div>
+  </div>
+
+  <!-- ===== 주문 확인 페이지 ===== -->
+  <div class="confirm-page" id="confirmPage">
+    <h2>✅ 주문 확인</h2>
+    <p class="cart-hint">아래 내용이 맞는지 한 번 더 확인해 주세요.</p>
+
+    <!-- 받는 분 -->
+    <div class="confirm-box">
+      <h3>받는 분</h3>
+      <div class="confirm-row">
+        <b>받는 사람</b><span id="seeName"></span>
+      </div>
+      <div class="confirm-row">
+        <b>연락처</b><span id="seeTel"></span>
+      </div>
+      <div class="confirm-row">
+        <b>주소</b><span id="seeAddr"></span>
+      </div>
+    </div>
+
+    <!-- 주문할 상품 -->
+    <div class="confirm-box">
+      <h3>주문 상품</h3>
+      <div id="seeList"></div>
+    </div>
+
+    <!-- 금액 -->
+    <div class="cart-sum">
+      <div class="cart-sum-row">
+        <span>상품 총금액</span>
+        <span><span id="seeTotal">0</span>원</span>
+      </div>
+      <div class="cart-sum-row">
+        <span>배송비</span>
+        <span><span id="seeShip">0</span>원</span>
+      </div>
+      <div class="cart-sum-row total">
+        <span>전체 합계 금액</span>
+        <b><span id="seePay">0</span>원</b>
+      </div>
+    </div>
+
+    <p class="confirm-ask">이대로 주문하시겠습니까?</p>
+    <p class="confirm-msg" id="confirmMsg"></p>
+
+    <!-- 아래 버튼 -->
+    <div class="cart-buttons" id="confirmButtons">
+      <button class="btn-keep"  onclick="openOrder()">◀ 고치기</button>
+      <button class="btn-order" onclick="finalOrder()">주문하기 🎁</button>
+    </div>
+  </div>
 
   <!-- ===== 회원가입 · 로그인 페이지 ===== -->
   <div class="auth-page" id="authPage">
@@ -1804,6 +2114,8 @@
       document.getElementById("shopPage").style.display = (which === "shop") ? "block" : "none";
       document.getElementById("cartPage").style.display = (which === "cart") ? "block" : "none";
       document.getElementById("authPage").style.display = (which === "auth") ? "block" : "none";
+      document.getElementById("orderPage").style.display = (which === "order") ? "block" : "none";
+      document.getElementById("confirmPage").style.display = (which === "confirm") ? "block" : "none";
 
       // 떠 있는 장바구니 버튼은 상품 목록에서만 보입니다.
       document.querySelector(".cart-fab").style.display = (which === "shop") ? "block" : "none";
@@ -1815,18 +2127,9 @@
     function openCart() { showPage("cart"); }   // 장바구니 보기
     function openAuth() { showPage("auth"); }   // 회원가입 · 로그인 보기
 
-    // 주문하기 버튼을 누르면
+    // 장바구니의 주문하기 버튼 → 주문서 화면으로 넘어갑니다.
     function order() {
-      if (cart.length === 0) {
-        alert("먼저 담고 싶은 상품을 골라주세요 🛍️");
-        return;
-      }
-
-      alert("주문이 접수되었어요! 감사합니다 💙");
-      cart = [];           // 장바구니를 비웁니다
-      deleteAllItems();
-      saveCart();
-      drawCart();
+      openOrder();
     }
 
     // 이 브라우저에도 장바구니를 복사해 둡니다. (서버가 느려도 바로 보이게)
@@ -1903,6 +2206,281 @@
     }
 
 
+
+
+    /* ===== 주문서 ===== */
+
+    // 주문서 화면을 엽니다.
+    // 로그인하지 않았거나 장바구니가 비어 있으면 들어갈 수 없습니다.
+    function openOrder() {
+      if (!user) {
+        alert("주문은 로그인한 뒤에 하실 수 있어요 🙂");
+        openAuth();
+        return;
+      }
+
+      if (cart.length === 0) {
+        alert("장바구니가 비어 있어요. 먼저 상품을 담아주세요 🛍️");
+        openCart();
+        return;
+      }
+
+      drawOrder();
+      orderMsg("", false);
+
+      // 지난번에 남은 분홍 표시를 지웁니다.
+      clearField("Name");
+      clearField("Tel");
+      clearField("Addr");
+
+      showPage("order");
+    }
+
+    // 주문서에 장바구니 내용과 금액을 보여줍니다. (장바구니는 건드리지 않습니다)
+    function drawOrder() {
+      var total = 0;
+      var html  = "";
+
+      for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        total += item.price * item.count;
+
+        html += '<div class="order-line">'
+              +   (item.pic ? '<img src="' + item.pic + '" alt="">' : '')
+              +   '<span class="n">' + item.name + '</span>'
+              +   '<span class="c">' + item.count + '개</span>'
+              +   '<span class="a">' + won(item.price * item.count) + '원</span>'
+              + '</div>';
+      }
+
+      document.getElementById("orderList").innerHTML = html;
+
+      // 배송비: 3만원 이상이면 무료
+      var ship = 0;
+      if (total > 0 && total < 30000) {
+        ship = 3000;
+      }
+
+      document.getElementById("orderTotal").textContent = won(total);
+      document.getElementById("orderShip").textContent  = won(ship);
+      document.getElementById("orderPay").textContent   = won(total + ship);
+    }
+
+    // 주문서 아래에 안내 글을 보여줍니다.
+    function orderMsg(text, isError) {
+      var box = document.getElementById("orderMsg");
+      box.textContent = text;
+      box.className = isError ? "order-msg" : "order-msg ok";
+    }
+
+    // 주문서에 적어야 하는 칸 세 개
+    var orderFields = [
+      { key: "Name", title: "받는 사람 이름", say: "받는 사람 이름을 적어주세요." },
+      { key: "Tel",  title: "연락처",         say: "연락처를 적어주세요. 예) 010-1234-5678" },
+      { key: "Addr", title: "주소",           say: "주소를 적어주세요. 한 칸에 모두 적으시면 돼요." }
+    ];
+
+    // 다시 적기 시작하면 분홍 표시를 지웁니다.
+    function clearField(key) {
+      document.getElementById("order" + key).classList.remove("empty");
+      document.getElementById("msg" + key).textContent = "";
+    }
+
+    // 주문 완료 버튼 (지금은 적은 내용만 확인합니다. 저장은 아직 하지 않습니다)
+    function submitOrder() {
+      var missing = [];   // 안 적은 칸 이름들
+      var first   = null; // 그중 맨 위 칸
+
+      for (var i = 0; i < orderFields.length; i++) {
+        var f   = orderFields[i];
+        var box = document.getElementById("order" + f.key);
+        var msg = document.getElementById("msg" + f.key);
+
+        if (box.value.trim() === "") {
+          box.classList.add("empty");          // 분홍 테두리로 짚어주기
+          msg.textContent = "⚠ " + f.say;      // 그 칸 바로 아래에 안내
+          missing.push(f.title);
+
+          if (!first) {
+            first = box;
+          }
+        } else {
+          box.classList.remove("empty");
+          msg.textContent = "";
+        }
+      }
+
+      // 하나라도 안 적었으면 주문으로 넘어가지 않습니다.
+      if (missing.length > 0) {
+        if (missing.length === 1) {
+          orderMsg("아직 '" + missing[0] + "' 칸을 안 적으셨어요. 분홍색으로 표시한 칸을 적어주세요.", true);
+        } else {
+          orderMsg("아직 안 적은 칸이 " + missing.length + "개 있어요 → " + missing.join(", ")
+                 + "\n분홍색으로 표시한 칸을 모두 적어주세요.", true);
+        }
+
+        first.focus();   // 맨 위 빈 칸으로 커서를 옮겨줍니다
+        first.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+
+      showConfirm();   // 모두 적었으면 주문 확인 화면으로 넘어갑니다
+    }
+
+
+    /* ===== 주문 확인 ===== */
+
+    // 주문서에 적은 내용과 담은 상품을 한 번 더 보여줍니다.
+    function showConfirm() {
+      // 받는 분
+      document.getElementById("seeName").textContent = document.getElementById("orderName").value.trim();
+      document.getElementById("seeTel").textContent  = document.getElementById("orderTel").value.trim();
+      document.getElementById("seeAddr").textContent = document.getElementById("orderAddr").value.trim();
+
+      // 주문할 상품과 수량
+      var total = 0;
+      var html  = "";
+
+      for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        total += item.price * item.count;
+
+        html += '<div class="order-line">'
+              +   (item.pic ? '<img src="' + item.pic + '" alt="">' : '')
+              +   '<span class="n">' + item.name + '</span>'
+              +   '<span class="c">' + item.count + '개</span>'
+              +   '<span class="a">' + won(item.price * item.count) + '원</span>'
+              + '</div>';
+      }
+
+      document.getElementById("seeList").innerHTML = html;
+
+      // 배송비: 3만원 이상이면 무료
+      var ship = 0;
+      if (total > 0 && total < 30000) {
+        ship = 3000;
+      }
+
+      document.getElementById("seeTotal").textContent = won(total);
+      document.getElementById("seeShip").textContent  = won(ship);
+      document.getElementById("seePay").textContent   = won(total + ship);
+
+      confirmMsg("");
+
+      // 버튼을 원래대로 되돌립니다. (주문을 끝낸 뒤 다시 들어올 수 있으니까요)
+      document.getElementById("confirmButtons").innerHTML =
+          '<button class="btn-keep"  onclick="openOrder()">◀ 고치기</button>'
+        + '<button class="btn-order" onclick="finalOrder()">주문하기 🎁</button>';
+
+      showPage("confirm");
+    }
+
+    // 주문 확인 화면에 안내 글을 보여줍니다.
+    function confirmMsg(text) {
+      document.getElementById("confirmMsg").textContent = text;
+    }
+
+    // 로그인한 손님 자격으로 서버에 말을 겁니다.
+    // (주문은 본인만 저장하고 본인만 볼 수 있습니다)
+    function userHeaders() {
+      return {
+        "apikey": SB_KEY,
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      };
+    }
+
+    // 주문 확인 화면의 주문하기 버튼 → 서버에 주문을 저장합니다.
+    function finalOrder() {
+      if (!user || !token) {
+        confirmMsg("로그인이 풀렸어요. 다시 로그인한 뒤 주문해 주세요.");
+        openAuth();
+        return;
+      }
+
+      if (cart.length === 0) {
+        confirmMsg("장바구니가 비어 있어요.");
+        return;
+      }
+
+      // 금액을 다시 계산합니다.
+      var total = 0;
+      for (var i = 0; i < cart.length; i++) {
+        total += cart[i].price * cart[i].count;
+      }
+
+      var ship = 0;
+      if (total > 0 && total < 30000) {
+        ship = 3000;
+      }
+
+      confirmMsg("주문을 저장하는 중이에요...");
+
+      var head = userHeaders();
+      head["Prefer"] = "return=representation";   // 저장한 주문 번호를 돌려받습니다
+
+      fetch(SB_URL + "/rest/v1/orders", {
+        method: "POST",
+        headers: head,
+        body: JSON.stringify({
+          user_id:       user.id,
+          receiver_name: document.getElementById("orderName").value.trim(),
+          receiver_tel:  document.getElementById("orderTel").value.trim(),
+          address:       document.getElementById("orderAddr").value.trim(),
+          items_total:   total,
+          shipping_fee:  ship,
+          pay_total:     total + ship
+        })
+      })
+      .then(function (res) { return res.json(); })
+      .then(function (rows) {
+        if (!rows || !rows[0] || !rows[0].id) {
+          throw new Error("주문 저장 실패");
+        }
+
+        var orderId = rows[0].id;
+
+        // 주문한 상품을 한 줄씩 저장합니다. (그때의 값도 같이 남깁니다)
+        var lines = [];
+        for (var i = 0; i < cart.length; i++) {
+          lines.push({
+            order_id:   orderId,
+            product_id: cart[i].id,
+            name:       cart[i].name,
+            price:      cart[i].price,
+            count:      cart[i].count
+          });
+        }
+
+        return fetch(SB_URL + "/rest/v1/order_items", {
+          method: "POST",
+          headers: userHeaders(),
+          body: JSON.stringify(lines)
+        })
+        .then(function (res2) {
+          if (!res2.ok) {
+            throw new Error("주문 상품 저장 실패");
+          }
+          return orderId;
+        });
+      })
+      .then(function (orderId) {
+        // 주문이 끝났으니 장바구니를 비웁니다.
+        cart = [];
+        deleteAllItems();
+        saveCart();
+        drawCart();
+
+        confirmMsg("주문이 접수되었어요! 감사합니다 💙\n주문번호 " + orderId.slice(0, 8));
+
+        // 같은 주문을 두 번 넣지 않도록 버튼을 바꿔둡니다.
+        document.getElementById("confirmButtons").innerHTML =
+          '<button class="btn-keep" onclick="showShop()">◀ 상품 보러 가기</button>';
+      })
+      .catch(function () {
+        confirmMsg("주문을 저장하지 못했어요 😢\n잠시 뒤에 다시 해주세요. 계속 안 되면 다시 로그인해 보세요.");
+      });
+    }
 
     /* ===== 약관 동의 ===== */
 
@@ -1983,7 +2561,8 @@
     }
     /* ===== 회원가입 · 로그인 ===== */
 
-    var user = null;   // 로그인한 손님 정보 (로그인 전에는 null)
+    var user  = null;   // 로그인한 손님 정보 (로그인 전에는 null)
+    var token = null;   // 로그인한 손님의 출입증 (주문을 저장할 때 씁니다)
 
     // 안내 글을 보여줍니다. (두 번째 값이 true 면 분홍색 오류 글)
     function authMsg(text, isError) {
@@ -2086,7 +2665,12 @@
         }
 
         user = data.user;
-        localStorage.setItem("session", JSON.stringify({ token: data.access_token, user: data.user }));
+        token = data.access_token;
+        localStorage.setItem("session", JSON.stringify({
+          token:   data.access_token,
+          refresh: data.refresh_token,
+          user:    data.user
+        }));
 
         document.getElementById("loginPw").value = "";
         updateAuthUI();
@@ -2101,7 +2685,8 @@
 
     // 로그아웃 버튼
     function signOut() {
-      user = null;
+      user  = null;
+      token = null;
       localStorage.removeItem("session");
       updateAuthUI();
       switchOwner();   // 손님용 장바구니·찜으로 되돌립니다
@@ -2111,10 +2696,39 @@
     // 브라우저에 기억해 둔 로그인 정보를 꺼냅니다.
     function loadSession() {
       var saved = localStorage.getItem("session");
+
       if (saved) {
-        user = JSON.parse(saved).user;
+        var s = JSON.parse(saved);
+        user  = s.user;
+        token = s.token;
+        refreshSession(s.refresh);   // 출입증을 새것으로 바꿔둡니다
       }
       updateAuthUI();
+    }
+
+    // 오래된 출입증을 새것으로 바꿉니다. (하루 뒤에 와도 주문할 수 있게)
+    function refreshSession(refresh) {
+      if (!refresh) { return; }
+
+      fetch(SB_URL + "/auth/v1/token?grant_type=refresh_token", {
+        method: "POST",
+        headers: { "apikey": SB_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: refresh })
+      })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.access_token) { return; }
+
+        user  = data.user;
+        token = data.access_token;
+        localStorage.setItem("session", JSON.stringify({
+          token:   data.access_token,
+          refresh: data.refresh_token,
+          user:    data.user
+        }));
+        updateAuthUI();
+      })
+      .catch(function () { /* 안 되어도 그냥 둡니다 */ });
     }
 
     // 로그인 상태에 맞게 화면을 바꿉니다.
