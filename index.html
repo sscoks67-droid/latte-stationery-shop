@@ -149,6 +149,33 @@
     .cat-art   { background-color: #8fd6b4; }
     .cat-etc   { background-color: #b8a6e8; }
 
+    /* 상품을 불러오는 중 · 실패했을 때 안내 */
+    .loading {
+      width: 100%;
+      text-align: center;
+      font-size: 15px;
+      color: #6b7f92;
+      line-height: 1.9;
+      padding: 50px 20px;
+      margin: 0;
+    }
+    .retry {
+      display: block;
+      margin: 16px auto 0;
+      padding: 10px 24px;
+      background-color: #eaf7ff;
+      color: #4aa3d8;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .retry:hover {
+      background-color: #7fc8f8;
+      color: white;
+    }
+
     /* 상품 목록 */
     .products {
       display: flex;
@@ -942,220 +969,8 @@
     <button class="cat-etc"    onclick="showCategory('etc', this)">🧰 기타용품</button>
   </div>
 
-  <!-- 상품 카드 18개 -->
-  <div class="products">
-
-    <div class="card pen">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="best">BEST</span>
-      <span class="badge">30% 할인</span>
-      <img class="photo" src="images/pencil.jpg" alt="파스텔 연필 세트">
-      <h3>파스텔 연필 세트</h3>
-      <p class="price">3,500원</p>
-      <p class="old-price">5,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card paper">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">30% 할인</span>
-      <img class="photo" src="images/note.jpg" alt="구름 무늬 노트">
-      <h3>구름 무늬 노트</h3>
-      <p class="price">4,200원</p>
-      <p class="old-price">6,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card pen">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">26% 할인</span>
-      <img class="photo" src="images/highlighter.jpg" alt="말랑 형광펜 5색">
-      <h3>말랑 형광펜 5색</h3>
-      <p class="price">5,900원</p>
-      <p class="old-price">8,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card art">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">25% 할인</span>
-      <img class="photo" src="images/crayon.jpg" alt="말랑 크레파스 12색">
-      <h3>말랑 크레파스 12색</h3>
-      <p class="price">6,000원</p>
-      <p class="old-price">8,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card etc">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">20% 할인</span>
-      <img class="photo" src="images/eraser.png" alt="말랑 지우개 3개입">
-      <h3>말랑 지우개 3개입</h3>
-      <p class="price">2,400원</p>
-      <p class="old-price">3,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card paper">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">15% 할인</span>
-      <img class="photo" src="images/paper.jpg" alt="A4 복사지 500매">
-      <h3>A4 복사지 500매</h3>
-      <p class="price">4,250원</p>
-      <p class="old-price">5,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card etc">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">28% 할인</span>
-      <img class="photo" src="images/tape.jpg" alt="스카치테이프 2개입">
-      <h3>스카치테이프 2개입</h3>
-      <p class="price">1,800원</p>
-      <p class="old-price">2,500원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card pen">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">22% 할인</span>
-      <img class="photo" src="images/lead.jpg" alt="샤프심 0.5mm 5통">
-      <h3>샤프심 0.5mm 5통</h3>
-      <p class="price">2,700원</p>
-      <p class="old-price">3,500원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card pen">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">24% 할인</span>
-      <img class="photo" src="images/ballpoint.jpg" alt="파스텔 볼펜 5색">
-      <h3>파스텔 볼펜 5색</h3>
-      <p class="price">3,800원</p>
-      <p class="old-price">5,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card paper">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">18% 할인</span>
-      <img class="photo" src="images/diary.jpg" alt="몽글 다이어리">
-      <h3>몽글 다이어리</h3>
-      <p class="price">9,800원</p>
-      <p class="old-price">12,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card paper">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">20% 할인</span>
-      <img class="photo" src="images/memo.jpg" alt="떡메모지 100매">
-      <h3>떡메모지 100매</h3>
-      <p class="price">2,800원</p>
-      <p class="old-price">3,500원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card art">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">27% 할인</span>
-      <img class="photo" src="images/watercolor.jpg" alt="수채화 물감 12색">
-      <h3>수채화 물감 12색</h3>
-      <p class="price">8,000원</p>
-      <p class="old-price">11,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card art">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">23% 할인</span>
-      <img class="photo" src="images/brush.jpg" alt="그림 붓 3종 세트">
-      <h3>그림 붓 3종 세트</h3>
-      <p class="price">4,600원</p>
-      <p class="old-price">6,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card etc">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">30% 할인</span>
-      <img class="photo" src="images/ruler.jpg" alt="삼각자 3종 세트">
-      <h3>삼각자 3종 세트</h3>
-      <p class="price">2,100원</p>
-      <p class="old-price">3,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card etc">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">25% 할인</span>
-      <img class="photo" src="images/scissors.jpg" alt="안전 가위">
-      <h3>안전 가위</h3>
-      <p class="price">3,000원</p>
-      <p class="old-price">4,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card etc">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">21% 할인</span>
-      <img class="photo" src="images/clip.jpg" alt="클립·집게 세트">
-      <h3>클립·집게 세트</h3>
-      <p class="price">1,900원</p>
-      <p class="old-price">2,400원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card etc">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">26% 할인</span>
-      <img class="photo" src="images/bookmark.jpg" alt="하트 책갈피 5개">
-      <h3>하트 책갈피 5개</h3>
-      <p class="price">2,200원</p>
-      <p class="old-price">3,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card etc">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">19% 할인</span>
-      <img class="photo" src="images/pencilcase.jpg" alt="곰돌이 필통">
-      <h3>곰돌이 필통</h3>
-      <p class="price">6,500원</p>
-      <p class="old-price">8,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-    <div class="card etc">
-      <button class="wish" onclick="toggleWish(this)">♡</button>
-      <span class="in-cart"></span>
-      <span class="badge">33% 할인</span>
-      <img class="photo" src="images/sticker.jpg" alt="무지개 스티커 100장">
-      <h3>무지개 스티커 100장</h3>
-      <p class="price">2,000원</p>
-      <p class="old-price">3,000원</p>
-      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
-    </div>
-
-  </div>
+  <!-- 상품 카드 (Supabase 에서 불러와 자동으로 채웁니다) -->
+  <div class="products"></div>
 
   <!-- 찾는 상품이 없을 때 보이는 안내문 -->
   <p class="no-result" id="noResult">
@@ -1884,6 +1699,54 @@
         });
     }
 
+    /* ===== 상품 목록을 서버에서 불러오기 ===== */
+
+    // Supabase 에 저장된 상품을 가져와 화면에 그립니다.
+    function loadProducts() {
+      var box = document.querySelector(".products");
+      box.innerHTML = '<p class="loading">상품을 불러오는 중이에요... 🛍️</p>';
+
+      fetch(SB_URL + "/rest/v1/products?select=*&order=sort_order.asc", { headers: sbHeaders() })
+        .then(function (res) { return res.json(); })
+        .then(function (rows) {
+          if (!rows || rows.length === 0) {
+            throw new Error("상품 없음");
+          }
+          drawProducts(rows);
+        })
+        .catch(function () {
+          box.innerHTML = '<p class="loading">😢 상품을 불러오지 못했어요.<br>'
+                        + '인터넷 연결을 확인해 주세요.'
+                        + '<button class="retry" onclick="loadProducts()">다시 불러오기</button></p>';
+        });
+    }
+
+    // 가져온 상품으로 카드를 하나씩 만듭니다.
+    function drawProducts(rows) {
+      var html = "";
+
+      for (var i = 0; i < rows.length; i++) {
+        var p = rows[i];
+
+        html += '<div class="card ' + p.category + '">'
+              +   '<button class="wish" onclick="toggleWish(this)">♡</button>'
+              +   '<span class="in-cart"></span>'
+              +   (p.is_best   ? '<span class="best">BEST</span>' : '')
+              +   (p.discount  ? '<span class="badge">' + p.discount + '% 할인</span>' : '')
+              +   '<img class="photo" src="' + p.image + '" alt="' + p.name + '">'
+              +   '<h3>' + p.name + '</h3>'
+              +   '<p class="price">' + won(p.price) + '원</p>'
+              +   (p.old_price ? '<p class="old-price">' + won(p.old_price) + '원</p>' : '')
+              +   '<button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>'
+              + '</div>';
+      }
+
+      document.querySelector(".products").innerHTML = html;
+
+      markCards();   // 장바구니에 담긴 개수를 카드에 표시
+      countWish();   // 찜 개수 세기
+    }
+
 
 
     /* ===== 약관 동의 ===== */
@@ -2133,6 +1996,7 @@
     }
 
     loadSession();          // 로그인 상태부터 확인
+    loadProducts();         // 상품 목록을 서버에서 불러오기
     loadCart();             // 이 브라우저에 저장해 둔 장바구니 꺼내기
     loadCartFromServer();   // 서버에 저장해 둔 장바구니도 확인
 
