@@ -206,6 +206,15 @@
       color: #ff4d79;
     }
 
+    /* 로그인 환영 인사 */
+    .welcome {
+      display: none;             /* 로그인 전에는 숨깁니다 */
+      font-size: 16px;
+      font-weight: bold;
+      color: #2f6d96;
+      margin: 14px 0 0;
+    }
+
     /* 헤더의 찜 개수 */
     .wish-count {
       display: inline-block;
@@ -864,6 +873,7 @@
   <header>
     <h1>☕ 청소년 문구점</h1>
     <p>공부가 즐거워지는 귀여운 학생 문구점 ✏️</p>
+    <p class="welcome" id="welcomeMsg"></p>
     <p class="wish-count">찜한 상품 <span id="wishCount">0</span>개 💗</p>
     <p class="cart-count" onclick="openCart()">장바구니 <span id="cartCount">0</span>개 🛒</p>
   </header>
@@ -1178,8 +1188,8 @@
 
     <!-- 로그인했을 때 보이는 부분 -->
     <div class="auth-box" id="authWelcome">
-      <h3>반가워요! 💙</h3>
-      <p><b id="whoami"></b> 님으로 로그인되어 있어요.</p>
+      <h3 id="welcomeTitle"></h3>
+      <p>회원이 되어 주셔서 고마워요 💙<br><b id="whoami"></b> 으로 로그인되어 있어요.</p>
       <button class="btn-clear" onclick="signOut()">로그아웃</button>
     </div>
 
@@ -2033,7 +2043,7 @@
 
         document.getElementById("loginPw").value = "";
         updateAuthUI();
-        authMsg(user.email + " 님, 환영합니다! 💙", false);
+        authMsg(user.email.split("@")[0] + "님 환영합니다. 💙", false);
 
         loadCartFromServer();   // 내 계정에 저장된 장바구니 불러오기
       })
@@ -2064,15 +2074,28 @@
       var forms   = document.getElementById("authForms");
       var welcome = document.getElementById("authWelcome");
       var link    = document.getElementById("authLink");
+      var hello   = document.getElementById("welcomeMsg");
 
       if (user) {
+        var name = user.email.split("@")[0];   // 이메일 앞부분을 이름처럼 씁니다
+
         forms.style.display   = "none";
         welcome.style.display = "block";
+
+        document.getElementById("welcomeTitle").textContent = name + "님 환영합니다.";
         document.getElementById("whoami").textContent = user.email;
-        link.textContent = "👤 " + user.email.split("@")[0] + " 님";
+
+        hello.textContent   = name + "님 환영합니다.";   // 맨 위 인사말
+        hello.style.display = "block";
+
+        link.textContent = "👤 " + name + "님";
       } else {
         forms.style.display   = "flex";
         welcome.style.display = "none";
+
+        hello.textContent   = "";
+        hello.style.display = "none";
+
         link.textContent = "👤 로그인";
       }
     }
