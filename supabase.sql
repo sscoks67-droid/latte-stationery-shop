@@ -95,3 +95,32 @@ create policy ci_delete on public.cart_items for delete to anon using (true);
 --   order by ci.cart_id, p.id;
 
 -- ※ 옛 carts 표는 이제 쓰지 않습니다. 지우려면:  drop table public.carts;
+
+
+-- ============================================================
+--  찜한 상품 표  (2026-10-10 실행 완료)
+--  owner_id 는 장바구니 번호와 같은 값입니다.
+--  (로그인 전에는 cart-..., 로그인하면 user-... )
+-- ============================================================
+
+create table if not exists public.wish_items (
+  owner_id   text not null,
+  product_id int  not null references public.products(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (owner_id, product_id)
+);
+
+alter table public.wish_items enable row level security;
+
+drop policy if exists wi_read   on public.wish_items;
+drop policy if exists wi_insert on public.wish_items;
+drop policy if exists wi_delete on public.wish_items;
+
+create policy wi_read   on public.wish_items for select to anon using (true);
+create policy wi_insert on public.wish_items for insert to anon with check (true);
+create policy wi_delete on public.wish_items for delete to anon using (true);
+
+-- 어떤 상품이 가장 많이 찜 받았는지 보기
+--   select p.name, count(*) as 찜수
+--   from public.wish_items w join public.products p on p.id = w.product_id
+--   group by p.name order by 찜수 desc;

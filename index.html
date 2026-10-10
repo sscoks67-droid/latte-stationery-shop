@@ -1372,23 +1372,106 @@
       }
     }
 
+    /* ===== 찜하기 (서버에 저장) ===== */
+
+    var wish = [];   // 찜한 상품 번호 목록
+
+    // 이 상품을 찜했는지 확인합니다.
+    function isWished(id) {
+      return wish.indexOf(id) !== -1;
+    }
+
     // 하트를 누르면 찜하기가 켜지고, 다시 누르면 풀립니다.
     function toggleWish(btn) {
-      btn.classList.toggle("on");   // 켜져 있으면 끄고, 꺼져 있으면 켭니다
+      var card = btn.closest(".card");
+      var id   = Number(card.getAttribute("data-id"));
 
-      if (btn.classList.contains("on")) {
-        btn.textContent = "♥";      // 꽉 찬 하트
+      if (isWished(id)) {
+        wish.splice(wish.indexOf(id), 1);   // 목록에서 빼기
+        deleteWish(id);                     // 서버에서도 빼기
       } else {
-        btn.textContent = "♡";      // 빈 하트
+        wish.push(id);                      // 목록에 넣기
+        saveWish(id);                       // 서버에도 넣기
       }
 
+      localStorage.setItem("wish", JSON.stringify(wish));
+      markWish();
       countWish();
+    }
+
+    // 찜한 상품의 하트를 꽉 찬 모양으로 바꿔줍니다.
+    function markWish() {
+      var cards = document.querySelectorAll(".card");
+
+      for (var i = 0; i < cards.length; i++) {
+        var id    = Number(cards[i].getAttribute("data-id"));
+        var heart = cards[i].querySelector(".wish");
+
+        if (isWished(id)) {
+          heart.classList.add("on");
+          heart.textContent = "♥";    // 꽉 찬 하트
+        } else {
+          heart.classList.remove("on");
+          heart.textContent = "♡";    // 빈 하트
+        }
+      }
     }
 
     // 찜한 상품이 몇 개인지 세어서 맨 위에 보여줍니다.
     function countWish() {
-      var n = document.querySelectorAll(".wish.on").length;
-      document.getElementById("wishCount").textContent = n;
+      document.getElementById("wishCount").textContent = wish.length;
+    }
+
+    // 찜 하나를 서버에 저장합니다.
+    function saveWish(id) {
+      var headers = sbHeaders();
+      headers["Prefer"] = "resolution=merge-duplicates";
+
+      fetch(SB_URL + "/rest/v1/wish_items", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({ owner_id: myCartId(), product_id: id })
+      })
+      .catch(function () { /* 서버가 안 되어도 찜은 이 브라우저에 남습니다 */ });
+    }
+
+    // 찜 하나를 서버에서 지웁니다.
+    function deleteWish(id) {
+      fetch(SB_URL + "/rest/v1/wish_items?owner_id=eq." + myCartId() + "&product_id=eq." + id, {
+        method: "DELETE",
+        headers: sbHeaders()
+      })
+      .catch(function () { /* 실패해도 그냥 둡니다 */ });
+    }
+
+    // 페이지를 열 때 서버에 저장해 둔 찜 목록을 받아옵니다.
+    function loadWishFromServer() {
+      fetch(SB_URL + "/rest/v1/wish_items?select=product_id&owner_id=eq." + myCartId(), { headers: sbHeaders() })
+        .then(function (res) { return res.json(); })
+        .then(function (rows) {
+          if (!rows || rows.length === 0) {
+            return;   // 서버에 없으면 지금 것을 그대로 둡니다
+          }
+
+          wish = [];
+          for (var i = 0; i < rows.length; i++) {
+            wish.push(rows[i].product_id);
+          }
+
+          localStorage.setItem("wish", JSON.stringify(wish));
+          markWish();
+          countWish();
+        })
+        .catch(function () { /* 서버가 안 되어도 사이트는 그대로 작동합니다 */ });
+    }
+
+    // 브라우저에 저장해 둔 찜 목록을 먼저 꺼냅니다.
+    function loadWish() {
+      var saved = localStorage.getItem("wish");
+      if (saved) {
+        wish = JSON.parse(saved);
+      }
+      countWish();
     }
 
     /* ===== 여기부터 장바구니 ===== */
@@ -1794,6 +1877,7 @@
       document.querySelector(".products").innerHTML = html;
 
       markCards();   // 장바구니에 담긴 개수를 카드에 표시
+      markWish();    // 찜한 상품의 하트를 꽉 찬 모양으로
       countWish();   // 찜 개수 세기
     }
 
@@ -2047,8 +2131,10 @@
 
     loadSession();          // 로그인 상태부터 확인
     loadProducts();         // 상품 목록을 서버에서 불러오기
+    loadWish();             // 이 브라우저에 저장해 둔 찜 목록 꺼내기
     loadCart();             // 이 브라우저에 저장해 둔 장바구니 꺼내기
     loadCartFromServer();   // 서버에 저장해 둔 장바구니도 확인
+    loadWishFromServer();   // 서버에 저장해 둔 찜 목록도 확인
 
   </script>
 
