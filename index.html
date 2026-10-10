@@ -292,6 +292,83 @@
       color: white;
     }
 
+    /* ===== 회원가입 · 로그인 페이지 ===== */
+    .auth-page {
+      display: none;            /* 평소에는 숨겨둡니다 */
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 45px 20px 70px;
+    }
+    .auth-page h2 {
+      font-size: 26px;
+      margin: 0 0 6px;
+      text-align: center;
+    }
+    /* 회원가입 상자와 로그인 상자를 나란히 */
+    #authForms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .auth-box {
+      flex: 1;
+      min-width: 260px;
+      background-color: white;
+      border-radius: 20px;
+      padding: 26px 24px;
+      box-shadow: 0 3px 10px #dceefc;
+    }
+    .auth-box h3 {
+      margin: 0 0 18px;
+      font-size: 18px;
+      color: #4aa3d8;
+      text-align: center;
+    }
+    .auth-box label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      color: #6b7f92;
+      margin-bottom: 14px;
+    }
+    .auth-box input {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 11px 14px;
+      font-size: 14px;
+      border: 2px solid #e4f1fb;
+      border-radius: 12px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .auth-box input:focus {
+      border-color: #7fc8f8;
+    }
+    .auth-box button {
+      width: 100%;
+      margin-top: 6px;
+    }
+    /* 안내 글 (초록=성공, 분홍=오류) */
+    .auth-msg {
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0 0 22px;
+      min-height: 20px;
+    }
+    .auth-msg.ok {
+      color: #4aa3d8;
+    }
+    .auth-msg.error {
+      color: #ff4d79;
+    }
+    /* 로그인했을 때 보이는 상자 */
+    #authWelcome {
+      display: none;
+      text-align: center;
+    }
+
     /* ===== 장바구니 페이지 ===== */
     .cart-page {
       display: none;            /* 평소에는 숨겨둡니다 */
@@ -346,9 +423,12 @@
     }
 
     /* 한 줄 안의 칸들 */
-    .cart-emoji {
-      width: 34px;
-      font-size: 26px;
+    .cart-photo {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;        /* 정사각형으로 잘라서 넣습니다 */
+      border-radius: 10px;
+      background-color: #f2fbff;
       flex: none;
     }
     .cart-name {
@@ -447,6 +527,15 @@
       color: #4aa3d8;
       font-size: 13px;
       margin: 12px 0 0;
+    }
+
+    /* 서버 저장 상태 안내 */
+    .db-state {
+      text-align: center;
+      font-size: 12px;
+      color: #8fa2b4;
+      margin: 16px 0 0;
+      min-height: 16px;
     }
 
     /* 장바구니 페이지 아래 버튼 3개 */
@@ -641,6 +730,22 @@
       cursor: pointer;
     }
 
+    /* 사진 출처 (푸터 안에 접어둡니다) */
+    .credits {
+      max-width: 700px;
+      margin: 14px auto 0;
+      font-size: 12px;
+      color: #4a6276;
+    }
+    .credits summary {
+      cursor: pointer;
+    }
+    .credits p {
+      margin: 10px 0 0;
+      line-height: 1.8;
+      word-break: keep-all;
+    }
+
     /* 맨 아래 (푸터) */
     footer {
       background-color: #bfe6ff;
@@ -668,6 +773,7 @@
     <a href="#">인기상품</a>
     <a href="#">고객센터</a>
     <a href="#" onclick="openCart(); return false;">🛒 장바구니</a>
+    <a href="#" id="authLink" onclick="openAuth(); return false;">👤 로그인</a>
   </nav>
 
   <!-- ===== 상품 목록 화면 ===== -->
@@ -703,7 +809,7 @@
       <span class="in-cart"></span>
       <span class="best">BEST</span>
       <span class="badge">30% 할인</span>
-      <div class="emoji">✏️</div>
+      <img class="photo" src="images/pencil.jpg" alt="파스텔 연필 세트">
       <h3>파스텔 연필 세트</h3>
       <p class="price">3,500원</p>
       <p class="old-price">5,000원</p>
@@ -714,7 +820,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">30% 할인</span>
-      <div class="emoji">📒</div>
+      <img class="photo" src="images/note.jpg" alt="구름 무늬 노트">
       <h3>구름 무늬 노트</h3>
       <p class="price">4,200원</p>
       <p class="old-price">6,000원</p>
@@ -725,7 +831,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">26% 할인</span>
-      <div class="emoji">🌈</div>
+      <img class="photo" src="images/highlighter.jpg" alt="말랑 형광펜 5색">
       <h3>말랑 형광펜 5색</h3>
       <p class="price">5,900원</p>
       <p class="old-price">8,000원</p>
@@ -736,7 +842,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">25% 할인</span>
-      <div class="emoji">🖍️</div>
+      <img class="photo" src="images/crayon.jpg" alt="말랑 크레파스 12색">
       <h3>말랑 크레파스 12색</h3>
       <p class="price">6,000원</p>
       <p class="old-price">8,000원</p>
@@ -747,7 +853,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">20% 할인</span>
-      <div class="emoji">🧽</div>
+      <img class="photo" src="images/eraser.png" alt="말랑 지우개 3개입">
       <h3>말랑 지우개 3개입</h3>
       <p class="price">2,400원</p>
       <p class="old-price">3,000원</p>
@@ -758,7 +864,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">15% 할인</span>
-      <div class="emoji">📄</div>
+      <img class="photo" src="images/paper.jpg" alt="A4 복사지 500매">
       <h3>A4 복사지 500매</h3>
       <p class="price">4,250원</p>
       <p class="old-price">5,000원</p>
@@ -769,7 +875,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">28% 할인</span>
-      <div class="emoji">🩹</div>
+      <img class="photo" src="images/tape.jpg" alt="스카치테이프 2개입">
       <h3>스카치테이프 2개입</h3>
       <p class="price">1,800원</p>
       <p class="old-price">2,500원</p>
@@ -780,7 +886,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">22% 할인</span>
-      <div class="emoji">✒️</div>
+      <img class="photo" src="images/lead.jpg" alt="샤프심 0.5mm 5통">
       <h3>샤프심 0.5mm 5통</h3>
       <p class="price">2,700원</p>
       <p class="old-price">3,500원</p>
@@ -791,7 +897,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">24% 할인</span>
-      <div class="emoji">🖊️</div>
+      <img class="photo" src="images/ballpoint.jpg" alt="파스텔 볼펜 5색">
       <h3>파스텔 볼펜 5색</h3>
       <p class="price">3,800원</p>
       <p class="old-price">5,000원</p>
@@ -802,7 +908,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">18% 할인</span>
-      <div class="emoji">📔</div>
+      <img class="photo" src="images/diary.jpg" alt="몽글 다이어리">
       <h3>몽글 다이어리</h3>
       <p class="price">9,800원</p>
       <p class="old-price">12,000원</p>
@@ -813,7 +919,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">20% 할인</span>
-      <div class="emoji">📝</div>
+      <img class="photo" src="images/memo.jpg" alt="떡메모지 100매">
       <h3>떡메모지 100매</h3>
       <p class="price">2,800원</p>
       <p class="old-price">3,500원</p>
@@ -824,7 +930,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">27% 할인</span>
-      <div class="emoji">🎨</div>
+      <img class="photo" src="images/watercolor.jpg" alt="수채화 물감 12색">
       <h3>수채화 물감 12색</h3>
       <p class="price">8,000원</p>
       <p class="old-price">11,000원</p>
@@ -835,7 +941,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">23% 할인</span>
-      <div class="emoji">🖌️</div>
+      <img class="photo" src="images/brush.jpg" alt="그림 붓 3종 세트">
       <h3>그림 붓 3종 세트</h3>
       <p class="price">4,600원</p>
       <p class="old-price">6,000원</p>
@@ -846,7 +952,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">30% 할인</span>
-      <div class="emoji">📐</div>
+      <img class="photo" src="images/ruler.jpg" alt="삼각자 3종 세트">
       <h3>삼각자 3종 세트</h3>
       <p class="price">2,100원</p>
       <p class="old-price">3,000원</p>
@@ -857,7 +963,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">25% 할인</span>
-      <div class="emoji">✂️</div>
+      <img class="photo" src="images/scissors.jpg" alt="안전 가위">
       <h3>안전 가위</h3>
       <p class="price">3,000원</p>
       <p class="old-price">4,000원</p>
@@ -868,7 +974,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">21% 할인</span>
-      <div class="emoji">📎</div>
+      <img class="photo" src="images/clip.jpg" alt="클립·집게 세트">
       <h3>클립·집게 세트</h3>
       <p class="price">1,900원</p>
       <p class="old-price">2,400원</p>
@@ -879,7 +985,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">26% 할인</span>
-      <div class="emoji">🔖</div>
+      <img class="photo" src="images/bookmark.jpg" alt="하트 책갈피 5개">
       <h3>하트 책갈피 5개</h3>
       <p class="price">2,200원</p>
       <p class="old-price">3,000원</p>
@@ -890,7 +996,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">19% 할인</span>
-      <div class="emoji">🧸</div>
+      <img class="photo" src="images/pencilcase.jpg" alt="곰돌이 필통">
       <h3>곰돌이 필통</h3>
       <p class="price">6,500원</p>
       <p class="old-price">8,000원</p>
@@ -901,7 +1007,7 @@
       <button class="wish" onclick="toggleWish(this)">♡</button>
       <span class="in-cart"></span>
       <span class="badge">33% 할인</span>
-      <div class="emoji">🌟</div>
+      <img class="photo" src="images/sticker.jpg" alt="무지개 스티커 100장">
       <h3>무지개 스티커 100장</h3>
       <p class="price">2,000원</p>
       <p class="old-price">3,000원</p>
@@ -961,6 +1067,53 @@
   </div>
   <!-- ===== 상품 목록 화면 끝 ===== -->
 
+  <!-- ===== 회원가입 · 로그인 페이지 ===== -->
+  <div class="auth-page" id="authPage">
+    <h2>👤 회원</h2>
+    <p class="cart-hint">회원이 되시면 장바구니가 계정에 저장되어 다른 기기에서도 이어볼 수 있어요.</p>
+
+    <p class="auth-msg" id="authMsg"></p>
+
+    <!-- 로그인했을 때 보이는 부분 -->
+    <div class="auth-box" id="authWelcome">
+      <h3>반가워요! 💙</h3>
+      <p><b id="whoami"></b> 님으로 로그인되어 있어요.</p>
+      <button class="btn-clear" onclick="signOut()">로그아웃</button>
+    </div>
+
+    <!-- 로그인하지 않았을 때 보이는 부분 -->
+    <div id="authForms">
+      <div class="auth-box">
+        <h3>회원가입</h3>
+        <label>이메일
+          <input type="email" id="joinEmail" placeholder="latte@example.com">
+        </label>
+        <label>비밀번호
+          <input type="password" id="joinPw" placeholder="6자 이상">
+        </label>
+        <label>비밀번호 확인
+          <input type="password" id="joinPw2" placeholder="한 번 더 입력">
+        </label>
+        <button class="btn-order" onclick="signUp()">가입하기 🎉</button>
+      </div>
+
+      <div class="auth-box">
+        <h3>로그인</h3>
+        <label>이메일
+          <input type="email" id="loginEmail" placeholder="latte@example.com">
+        </label>
+        <label>비밀번호
+          <input type="password" id="loginPw" placeholder="비밀번호">
+        </label>
+        <button class="btn-keep" onclick="signIn()">로그인</button>
+      </div>
+    </div>
+
+    <div class="cart-buttons">
+      <button class="btn-keep" onclick="showShop()">◀ 상품 보러 가기</button>
+    </div>
+  </div>
+
   <!-- ===== 장바구니 페이지 (상품 목록과 번갈아 보입니다) ===== -->
   <div class="cart-page" id="cartPage">
     <h2>🛒 장바구니</h2>
@@ -968,7 +1121,7 @@
 
     <!-- 표 제목 줄 -->
     <div class="cart-head">
-      <span class="cart-emoji"></span>
+      <span class="cart-photo"></span>
       <span class="cart-name">상품</span>
       <span class="cart-amount">개수</span>
       <span class="cart-price">금액</span>
@@ -995,6 +1148,9 @@
       <p class="cart-free" id="cartFree"></p>
     </div>
 
+    <!-- 서버 저장 상태 -->
+    <p class="db-state" id="dbState"></p>
+
     <!-- 아래 버튼 3개 -->
     <div class="cart-buttons">
       <button class="btn-keep"  onclick="showShop()">◀ 계속 쇼핑하기</button>
@@ -1007,6 +1163,21 @@
   <footer>
     <p>📞 010-1234-5678 &nbsp; | &nbsp; ✉️ latte@shop.com</p>
     <p>© 2026 라떼 문구점</p>
+
+    <!-- 상품 사진 출처 (CC 라이선스라 저작자 표시가 필요합니다) -->
+    <details class="credits">
+      <summary>상품 사진 출처 보기</summary>
+      <p>
+        모든 사진은 위키미디어 공용(Wikimedia Commons)의 자유 이용 사진입니다.<br>
+        연필 Gageills (CC0) · 노트 frankieleon (CC BY 2.0) · 형광펜 Sokolikmawwer0 (CC BY-SA 3.0) ·
+        크레파스 Conrad 7 (CC0) · 지우개 JAH (FAL) · 복사지 Sage Ross (CC BY-SA 3.0) ·
+        테이프 Chenspec (CC BY-SA 3.0) · 샤프심 Bob Ionescu (Attribution) · 볼펜 Fiersel (CC0) ·
+        다이어리 Dvortygirl (CC BY-SA 3.0) · 떡메모지 J.P. C. (CC BY-SA 2.0) · 물감 Matt Brown (CC BY 4.0) ·
+        붓 Rhododendrites (CC BY-SA 4.0) · 삼각자 Lucasbosch (CC BY-SA 3.0) · 가위 Сергей Михель (CC0) ·
+        클립 Chenspec (CC BY-SA 3.0) · 책갈피 Mauro Cateb (CC BY-SA 3.0) · 필통 BilalSnackPack (CC BY-SA 4.0) ·
+        스티커 Sticker Mule (CC BY-SA 4.0)
+      </p>
+    </details>
   </footer>
 
   <!-- 어디서든 보이는 장바구니 버튼 -->
@@ -1179,14 +1350,14 @@
       var card  = btn.closest(".card");                 // 버튼이 들어있는 상품 카드
       var name  = card.querySelector("h3").textContent; // 상품 이름
       var price = Number(card.querySelector(".price").textContent.replace(/[^0-9]/g, ""));  // 3,500원 -> 3500
-      var icon  = card.querySelector(".emoji").textContent;  // 상품 그림(이모지)
+      var pic   = card.querySelector(".photo").getAttribute("src");  // 상품 사진 주소
 
       // 이미 담은 상품이면 개수만 1 늘립니다.
       var item = findItem(name);
       if (item) {
         item.count++;
       } else {
-        cart.push({ name: name, price: price, icon: icon, count: 1 });
+        cart.push({ name: name, price: price, pic: pic, count: 1 });
       }
 
       saveCart();
@@ -1271,10 +1442,10 @@
         total += item.price * item.count;
         count += item.count;
 
-        var icon = item.icon || "🛒";   // 예전에 담은 상품은 그림이 없을 수 있어요
+        var pic = item.pic || "";   // 예전에 담은 상품은 사진이 없을 수 있어요
 
         html += '<div class="cart-item">'
-              +   '<span class="cart-emoji">' + icon + '</span>'
+              +   (pic ? '<img class="cart-photo" src="' + pic + '" alt="">' : '<span class="cart-photo"></span>')
               +   '<span class="cart-name" title="' + item.name + '">' + item.name + '</span>'
               +   '<span class="cart-amount">'
               +     '<button onclick="minusCart(\'' + item.name + '\')">−</button>'
@@ -1348,22 +1519,21 @@
       return n.toLocaleString();
     }
 
-    // 장바구니 페이지를 보여줍니다. (상품 목록은 숨깁니다)
-    function openCart() {
-      document.getElementById("shopPage").style.display = "none";
-      document.getElementById("cartPage").style.display = "block";
-      document.querySelector(".cart-fab").style.display = "none";
+    // 화면 세 개(상품 목록 / 장바구니 / 회원) 중 하나만 보여줍니다.
+    function showPage(which) {
+      document.getElementById("shopPage").style.display = (which === "shop") ? "block" : "none";
+      document.getElementById("cartPage").style.display = (which === "cart") ? "block" : "none";
+      document.getElementById("authPage").style.display = (which === "auth") ? "block" : "none";
+
+      // 떠 있는 장바구니 버튼은 상품 목록에서만 보입니다.
+      document.querySelector(".cart-fab").style.display = (which === "shop") ? "block" : "none";
+
       window.scrollTo(0, 0);   // 맨 위로 올려줍니다
     }
 
-    // 다시 상품 목록 화면으로 돌아갑니다.
-    function showShop() {
-      document.getElementById("cartPage").style.display = "none";
-      document.getElementById("shopPage").style.display = "block";
-      document.querySelector(".cart-fab").style.display = "block";
-      window.scrollTo(0, 0);
-    }
-
+    function showShop() { showPage("shop"); }   // 상품 목록 보기
+    function openCart() { showPage("cart"); }   // 장바구니 보기
+    function openAuth() { showPage("auth"); }   // 회원가입 · 로그인 보기
     // 주문하기 버튼을 누르면
     function order() {
       if (cart.length === 0) {
@@ -1379,6 +1549,7 @@
     // 장바구니를 기억해 둡니다. (창을 닫았다 열어도 그대로 남아요)
     function saveCart() {
       localStorage.setItem("cart", JSON.stringify(cart));
+      saveCartToServer();   // 인터넷 서버에도 저장
     }
 
     // 페이지를 열 때 기억해 둔 장바구니를 꺼내옵니다.
@@ -1390,7 +1561,238 @@
       drawCart();
     }
 
-    loadCart();   // 페이지가 열릴 때 실행
+
+    /* ===== 인터넷 서버(Supabase)에도 장바구니 저장하기 ===== */
+
+    // 우리 가게 서버 주소와 공개 열쇠입니다. (사이트에 공개되어도 되는 열쇠입니다)
+    var SB_URL = "https://dombwrlksdgeqjwbxdhf.supabase.co";
+    var SB_KEY = "sb_publishable_gKX-NXu_7IXf6Wc0lAMJpQ_aMxautw9";
+
+    // 서버에 말을 걸 때마다 붙이는 기본 정보
+    function sbHeaders() {
+      return {
+        "apikey": SB_KEY,
+        "Authorization": "Bearer " + SB_KEY,
+        "Content-Type": "application/json"
+      };
+    }
+
+    // 손님마다 장바구니 번호를 하나씩 만들어 기억해 둡니다.
+    function myCartId() {
+      // 로그인했으면 계정 번호를 장바구니 번호로 씁니다.
+      if (user && user.id) {
+        return "user-" + user.id;
+      }
+
+      var id = localStorage.getItem("cartId");
+      if (!id) {
+        id = "cart-" + Date.now() + "-" + Math.random().toString(16).slice(2, 8);
+        localStorage.setItem("cartId", id);
+      }
+      return id;
+    }
+
+    // 장바구니 페이지 아래에 저장 상태를 알려줍니다.
+    function showSaveState(text) {
+      var box = document.getElementById("dbState");
+      if (box) {
+        box.textContent = text;
+      }
+    }
+
+    var saveTimer = null;   // 버튼을 빨리 눌러도 한 번만 보내도록 잠깐 모읍니다
+
+    // 장바구니를 서버에 저장합니다. (실패해도 사이트는 그대로 작동합니다)
+    function saveCartToServer() {
+      clearTimeout(saveTimer);
+
+      saveTimer = setTimeout(function () {
+        var headers = sbHeaders();
+        headers["Prefer"] = "resolution=merge-duplicates";   // 이미 있으면 덮어쓰기
+
+        fetch(SB_URL + "/rest/v1/carts", {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({
+            id: myCartId(),
+            items: cart,
+            updated_at: new Date().toISOString()
+          })
+        })
+        .then(function (res) {
+          if (res.ok) {
+            showSaveState("☁ 서버에 저장되었어요 · 내 장바구니 번호 " + myCartId());
+          } else {
+            showSaveState("⚠ 서버에 저장하지 못했어요 (이 브라우저에만 저장됩니다)");
+          }
+        })
+        .catch(function () {
+          showSaveState("⚠ 서버에 연결할 수 없어요 (이 브라우저에만 저장됩니다)");
+        });
+      }, 600);
+    }
+
+    // 서버에 저장해 둔 장바구니를 꺼내옵니다.
+    function loadCartFromServer() {
+      fetch(SB_URL + "/rest/v1/carts?select=items&id=eq." + myCartId(), { headers: sbHeaders() })
+        .then(function (res) { return res.json(); })
+        .then(function (rows) {
+          if (rows && rows.length > 0 && rows[0].items) {
+            cart = rows[0].items;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            drawCart();
+            showSaveState("☁ 서버에 저장해 둔 장바구니를 불러왔어요");
+          }
+        })
+        .catch(function () {
+          showSaveState("⚠ 서버에 연결할 수 없어요 (이 브라우저에만 저장됩니다)");
+        });
+    }
+
+
+    /* ===== 회원가입 · 로그인 ===== */
+
+    var user = null;   // 로그인한 손님 정보 (로그인 전에는 null)
+
+    // 안내 글을 보여줍니다. (두 번째 값이 true 면 분홍색 오류 글)
+    function authMsg(text, isError) {
+      var box = document.getElementById("authMsg");
+      box.textContent = text;
+      box.className = isError ? "auth-msg error" : "auth-msg ok";
+    }
+
+    // 서버가 보내준 영어 오류를 우리말로 바꿔줍니다.
+    function authError(data) {
+      var m = data.msg || data.error_description || data.message || data.error || "";
+
+      if (m.indexOf("already registered") >= 0)   { return "이미 가입된 이메일이에요. 로그인해 주세요."; }
+      if (m.indexOf("Invalid login") >= 0)        { return "이메일 또는 비밀번호가 맞지 않아요."; }
+      if (m.indexOf("Email not confirmed") >= 0)  { return "아직 메일 확인을 안 하셨어요. 메일함의 링크를 눌러 주세요 💌"; }
+      if (m.indexOf("Password should be") >= 0)   { return "비밀번호가 너무 짧아요. 6자 이상으로 만들어 주세요."; }
+      if (m.indexOf("validate email") >= 0)       { return "이메일 주소 형식이 올바르지 않아요. 다시 확인해 주세요."; }
+      if (m.indexOf("rate limit") >= 0)           { return "너무 여러 번 시도했어요. 잠시 뒤에 다시 해주세요."; }
+
+      return m || "알 수 없는 문제가 생겼어요.";
+    }
+
+    // 회원가입 버튼
+    function signUp() {
+      var email = document.getElementById("joinEmail").value.trim();
+      var pw    = document.getElementById("joinPw").value;
+      var pw2   = document.getElementById("joinPw2").value;
+
+      if (!email || !pw) {
+        authMsg("이메일과 비밀번호를 모두 입력해 주세요.", true);
+        return;
+      }
+      if (pw.length < 6) {
+        authMsg("비밀번호는 6자 이상으로 만들어 주세요.", true);
+        return;
+      }
+      if (pw !== pw2) {
+        authMsg("비밀번호 확인이 서로 달라요.", true);
+        return;
+      }
+
+      authMsg("가입하는 중이에요...", false);
+
+      fetch(SB_URL + "/auth/v1/signup", {
+        method: "POST",
+        headers: { "apikey": SB_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: pw })
+      })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.id && !data.user) {
+          authMsg(authError(data), true);
+          return;
+        }
+
+        authMsg("가입 신청이 끝났어요! " + email + " 메일함에서 확인 링크를 눌러 주세요 💌", false);
+        document.getElementById("joinPw").value  = "";
+        document.getElementById("joinPw2").value = "";
+      })
+      .catch(function () {
+        authMsg("서버에 연결할 수 없어요.", true);
+      });
+    }
+
+    // 로그인 버튼
+    function signIn() {
+      var email = document.getElementById("loginEmail").value.trim();
+      var pw    = document.getElementById("loginPw").value;
+
+      if (!email || !pw) {
+        authMsg("이메일과 비밀번호를 입력해 주세요.", true);
+        return;
+      }
+
+      authMsg("로그인하는 중이에요...", false);
+
+      fetch(SB_URL + "/auth/v1/token?grant_type=password", {
+        method: "POST",
+        headers: { "apikey": SB_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: pw })
+      })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.access_token) {
+          authMsg(authError(data), true);
+          return;
+        }
+
+        user = data.user;
+        localStorage.setItem("session", JSON.stringify({ token: data.access_token, user: data.user }));
+
+        document.getElementById("loginPw").value = "";
+        updateAuthUI();
+        authMsg(user.email + " 님, 환영합니다! 💙", false);
+
+        loadCartFromServer();   // 내 계정에 저장된 장바구니 불러오기
+      })
+      .catch(function () {
+        authMsg("서버에 연결할 수 없어요.", true);
+      });
+    }
+
+    // 로그아웃 버튼
+    function signOut() {
+      user = null;
+      localStorage.removeItem("session");
+      updateAuthUI();
+      authMsg("로그아웃했어요. 또 오세요 👋", false);
+    }
+
+    // 브라우저에 기억해 둔 로그인 정보를 꺼냅니다.
+    function loadSession() {
+      var saved = localStorage.getItem("session");
+      if (saved) {
+        user = JSON.parse(saved).user;
+      }
+      updateAuthUI();
+    }
+
+    // 로그인 상태에 맞게 화면을 바꿉니다.
+    function updateAuthUI() {
+      var forms   = document.getElementById("authForms");
+      var welcome = document.getElementById("authWelcome");
+      var link    = document.getElementById("authLink");
+
+      if (user) {
+        forms.style.display   = "none";
+        welcome.style.display = "block";
+        document.getElementById("whoami").textContent = user.email;
+        link.textContent = "👤 " + user.email.split("@")[0] + " 님";
+      } else {
+        forms.style.display   = "flex";
+        welcome.style.display = "none";
+        link.textContent = "👤 로그인";
+      }
+    }
+
+    loadSession();          // 로그인 상태부터 확인
+    loadCart();             // 이 브라우저에 저장해 둔 장바구니 꺼내기
+    loadCartFromServer();   // 서버에 저장해 둔 장바구니도 확인
 
   </script>
 
