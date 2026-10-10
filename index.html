@@ -1393,23 +1393,142 @@
 
     /* ===== 여기부터 장바구니 ===== */
 
+    // 우리 가게 서버 주소와 공개 열쇠입니다. (사이트에 공개되어도 되는 열쇠입니다)
+    var SB_URL = "https://dombwrlksdgeqjwbxdhf.supabase.co";
+    var SB_KEY = "sb_publishable_gKX-NXu_7IXf6Wc0lAMJpQ_aMxautw9";
+
     var cart = [];   // 담은 상품들이 들어가는 목록
+
+    // 서버에 말을 걸 때마다 붙이는 기본 정보
+    function sbHeaders() {
+      return {
+        "apikey": SB_KEY,
+        "Authorization": "Bearer " + SB_KEY,
+        "Content-Type": "application/json"
+      };
+    }
+
+    // 손님마다 장바구니 번호를 하나씩 만들어 기억해 둡니다.
+    function myCartId() {
+      // 로그인했으면 계정 번호를 장바구니 번호로 씁니다.
+      if (user && user.id) {
+        return "user-" + user.id;
+      }
+
+      var id = localStorage.getItem("cartId");
+      if (!id) {
+        id = "cart-" + Date.now() + "-" + Math.random().toString(16).slice(2, 8);
+        localStorage.setItem("cartId", id);
+      }
+      return id;
+    }
+
+    // 장바구니 페이지 아래에 저장 상태를 알려줍니다.
+    function showSaveState(text) {
+      var box = document.getElementById("dbState");
+      if (box) {
+        box.textContent = text;
+      }
+    }
+
+    function savedOk()   { showSaveState("☁ 서버에 저장되었어요 · 내 장바구니 번호 " + myCartId()); }
+    function savedFail() { showSaveState("⚠ 서버에 저장하지 못했어요 (이 브라우저에만 저장됩니다)"); }
+
+    /* ----- 서버(Supabase)의 장바구니 표를 고치는 부분 ----- */
+
+    // 상품 한 줄을 저장합니다. (이미 있으면 개수를 덮어씁니다)
+    function saveItem(id, count) {
+      var headers = sbHeaders();
+      headers["Prefer"] = "resolution=merge-duplicates";
+
+      fetch(SB_URL + "/rest/v1/cart_items", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          cart_id: myCartId(),
+          product_id: id,
+          count: count,
+          updated_at: new Date().toISOString()
+        })
+      })
+      .then(function (res) { if (res.ok) { savedOk(); } else { savedFail(); } })
+      .catch(savedFail);
+    }
+
+    // 상품 한 줄을 지웁니다.
+    function deleteItem(id) {
+      fetch(SB_URL + "/rest/v1/cart_items?cart_id=eq." + myCartId() + "&product_id=eq." + id, {
+        method: "DELETE",
+        headers: sbHeaders()
+      })
+      .then(function (res) { if (res.ok) { savedOk(); } else { savedFail(); } })
+      .catch(savedFail);
+    }
+
+    // 내 장바구니를 통째로 비웁니다.
+    function deleteAllItems() {
+      fetch(SB_URL + "/rest/v1/cart_items?cart_id=eq." + myCartId(), {
+        method: "DELETE",
+        headers: sbHeaders()
+      })
+      .then(function (res) { if (res.ok) { savedOk(); } else { savedFail(); } })
+      .catch(savedFail);
+    }
+
+    // 서버에 저장해 둔 장바구니를 꺼내옵니다. (값은 늘 상품표의 최신 값을 씁니다)
+    function loadCartFromServer() {
+      var url = SB_URL + "/rest/v1/cart_items"
+              + "?select=count,products(id,name,price,image)"
+              + "&cart_id=eq." + myCartId()
+              + "&order=product_id.asc";
+
+      fetch(url, { headers: sbHeaders() })
+        .then(function (res) { return res.json(); })
+        .then(function (rows) {
+          if (!rows || rows.length === 0) {
+            return;   // 서버에 아무것도 없으면 지금 장바구니를 그대로 둡니다
+          }
+
+          cart = [];
+          for (var i = 0; i < rows.length; i++) {
+            var p = rows[i].products;
+            if (!p) { continue; }
+
+            cart.push({ id: p.id, name: p.name, price: p.price, pic: p.image, count: rows[i].count });
+          }
+
+          saveCart();
+          drawCart();
+          showSaveState("☁ 서버에 저장해 둔 장바구니를 불러왔어요");
+        })
+        .catch(function () {
+          showSaveState("⚠ 서버에 연결할 수 없어요 (이 브라우저에만 저장됩니다)");
+        });
+    }
+
+    /* ----- 화면에서 장바구니를 다루는 부분 ----- */
 
     // 담기 버튼을 누르면 그 카드의 상품을 장바구니에 넣습니다.
     function addCart(btn) {
-      var card  = btn.closest(".card");                 // 버튼이 들어있는 상품 카드
-      var name  = card.querySelector("h3").textContent; // 상품 이름
-      var price = Number(card.querySelector(".price").textContent.replace(/[^0-9]/g, ""));  // 3,500원 -> 3500
-      var pic   = card.querySelector(".photo").getAttribute("src");  // 상품 사진 주소
+      var card = btn.closest(".card");                    // 버튼이 들어있는 상품 카드
+      var id   = Number(card.getAttribute("data-id"));    // 상품 번호
+      var item = findItem(id);
 
       // 이미 담은 상품이면 개수만 1 늘립니다.
-      var item = findItem(name);
       if (item) {
         item.count++;
       } else {
-        cart.push({ name: name, price: price, pic: pic, count: 1 });
+        item = {
+          id: id,
+          name: card.querySelector("h3").textContent,
+          price: Number(card.querySelector(".price").textContent.replace(/[^0-9]/g, "")),
+          pic: card.querySelector(".photo").getAttribute("src"),
+          count: 1
+        };
+        cart.push(item);
       }
 
+      saveItem(id, item.count);   // 서버에도 저장
       saveCart();
       drawCart();
 
@@ -1422,10 +1541,10 @@
       }, 900);
     }
 
-    // 장바구니에서 이름이 같은 상품을 찾습니다. (없으면 null)
-    function findItem(name) {
+    // 장바구니에서 상품 번호가 같은 것을 찾습니다. (없으면 null)
+    function findItem(id) {
       for (var i = 0; i < cart.length; i++) {
-        if (cart[i].name === name) {
+        if (cart[i].id === id) {
           return cart[i];
         }
       }
@@ -1433,38 +1552,43 @@
     }
 
     // 개수를 1 늘립니다.
-    function plusCart(name) {
-      var item = findItem(name);
-      if (item) {
-        item.count++;
-      }
+    function plusCart(id) {
+      var item = findItem(id);
+      if (!item) { return; }
+
+      item.count++;
+      saveItem(id, item.count);
       saveCart();
       drawCart();
     }
 
     // 개수를 1 줄입니다. (1개에서 더 줄이면 장바구니에서 빠집니다)
-    function minusCart(name) {
-      var item = findItem(name);
-      if (item) {
-        item.count--;
-        if (item.count < 1) {
-          removeCart(name);
-          return;
-        }
+    function minusCart(id) {
+      var item = findItem(id);
+      if (!item) { return; }
+
+      if (item.count <= 1) {
+        removeCart(id);
+        return;
       }
+
+      item.count--;
+      saveItem(id, item.count);
       saveCart();
       drawCart();
     }
 
     // 상품 하나를 장바구니에서 뺍니다.
-    function removeCart(name) {
+    function removeCart(id) {
       var left = [];
       for (var i = 0; i < cart.length; i++) {
-        if (cart[i].name !== name) {
+        if (cart[i].id !== id) {
           left.push(cart[i]);
         }
       }
       cart = left;
+
+      deleteItem(id);
       saveCart();
       drawCart();
     }
@@ -1474,8 +1598,10 @@
       if (cart.length === 0) {
         return;
       }
+
       if (confirm("장바구니를 모두 비울까요?")) {
         cart = [];
+        deleteAllItems();
         saveCart();
         drawCart();
       }
@@ -1492,18 +1618,18 @@
         total += item.price * item.count;
         count += item.count;
 
-        var pic = item.pic || "";   // 예전에 담은 상품은 사진이 없을 수 있어요
+        var pic = item.pic || "";
 
         html += '<div class="cart-item">'
               +   (pic ? '<img class="cart-photo" src="' + pic + '" alt="">' : '<span class="cart-photo"></span>')
               +   '<span class="cart-name" title="' + item.name + '">' + item.name + '</span>'
               +   '<span class="cart-amount">'
-              +     '<button onclick="minusCart(\'' + item.name + '\')">−</button>'
+              +     '<button onclick="minusCart(' + item.id + ')">−</button>'
               +     '<b>' + item.count + '</b>'
-              +     '<button onclick="plusCart(\'' + item.name + '\')">+</button>'
+              +     '<button onclick="plusCart(' + item.id + ')">+</button>'
               +   '</span>'
               +   '<span class="cart-price">' + won(item.price * item.count) + '원</span>'
-              +   '<button class="cart-remove" onclick="removeCart(\'' + item.name + '\')">✕</button>'
+              +   '<button class="cart-remove" onclick="removeCart(' + item.id + ')">✕</button>'
               + '</div>';
       }
 
@@ -1551,9 +1677,9 @@
       var cards = document.querySelectorAll(".card");
 
       for (var i = 0; i < cards.length; i++) {
-        var name  = cards[i].querySelector("h3").textContent;
+        var id    = Number(cards[i].getAttribute("data-id"));
         var badge = cards[i].querySelector(".in-cart");
-        var item  = findItem(name);
+        var item  = findItem(id);
 
         if (item) {
           badge.textContent = "🛒 " + item.count + "개";
@@ -1584,6 +1710,7 @@
     function showShop() { showPage("shop"); }   // 상품 목록 보기
     function openCart() { showPage("cart"); }   // 장바구니 보기
     function openAuth() { showPage("auth"); }   // 회원가입 · 로그인 보기
+
     // 주문하기 버튼을 누르면
     function order() {
       if (cart.length === 0) {
@@ -1593,111 +1720,34 @@
 
       alert("주문이 접수되었어요! 감사합니다 💙");
       cart = [];           // 장바구니를 비웁니다
+      deleteAllItems();
       saveCart();
       drawCart();
     }
-    // 장바구니를 기억해 둡니다. (창을 닫았다 열어도 그대로 남아요)
+
+    // 이 브라우저에도 장바구니를 복사해 둡니다. (서버가 느려도 바로 보이게)
     function saveCart() {
       localStorage.setItem("cart", JSON.stringify(cart));
-      saveCartToServer();   // 인터넷 서버에도 저장
     }
 
-    // 페이지를 열 때 기억해 둔 장바구니를 꺼내옵니다.
+    // 페이지를 열 때 브라우저에 복사해 둔 장바구니를 먼저 꺼냅니다.
     function loadCart() {
       var saved = localStorage.getItem("cart");
       if (saved) {
         cart = JSON.parse(saved);
       }
+
+      // 예전 방식으로 저장돼 상품 번호가 없는 것은 버립니다. (서버에서 다시 받아옵니다)
+      var ok = [];
+      for (var i = 0; i < cart.length; i++) {
+        if (typeof cart[i].id === "number") {
+          ok.push(cart[i]);
+        }
+      }
+      cart = ok;
       drawCart();
     }
 
-
-    /* ===== 인터넷 서버(Supabase)에도 장바구니 저장하기 ===== */
-
-    // 우리 가게 서버 주소와 공개 열쇠입니다. (사이트에 공개되어도 되는 열쇠입니다)
-    var SB_URL = "https://dombwrlksdgeqjwbxdhf.supabase.co";
-    var SB_KEY = "sb_publishable_gKX-NXu_7IXf6Wc0lAMJpQ_aMxautw9";
-
-    // 서버에 말을 걸 때마다 붙이는 기본 정보
-    function sbHeaders() {
-      return {
-        "apikey": SB_KEY,
-        "Authorization": "Bearer " + SB_KEY,
-        "Content-Type": "application/json"
-      };
-    }
-
-    // 손님마다 장바구니 번호를 하나씩 만들어 기억해 둡니다.
-    function myCartId() {
-      // 로그인했으면 계정 번호를 장바구니 번호로 씁니다.
-      if (user && user.id) {
-        return "user-" + user.id;
-      }
-
-      var id = localStorage.getItem("cartId");
-      if (!id) {
-        id = "cart-" + Date.now() + "-" + Math.random().toString(16).slice(2, 8);
-        localStorage.setItem("cartId", id);
-      }
-      return id;
-    }
-
-    // 장바구니 페이지 아래에 저장 상태를 알려줍니다.
-    function showSaveState(text) {
-      var box = document.getElementById("dbState");
-      if (box) {
-        box.textContent = text;
-      }
-    }
-
-    var saveTimer = null;   // 버튼을 빨리 눌러도 한 번만 보내도록 잠깐 모읍니다
-
-    // 장바구니를 서버에 저장합니다. (실패해도 사이트는 그대로 작동합니다)
-    function saveCartToServer() {
-      clearTimeout(saveTimer);
-
-      saveTimer = setTimeout(function () {
-        var headers = sbHeaders();
-        headers["Prefer"] = "resolution=merge-duplicates";   // 이미 있으면 덮어쓰기
-
-        fetch(SB_URL + "/rest/v1/carts", {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify({
-            id: myCartId(),
-            items: cart,
-            updated_at: new Date().toISOString()
-          })
-        })
-        .then(function (res) {
-          if (res.ok) {
-            showSaveState("☁ 서버에 저장되었어요 · 내 장바구니 번호 " + myCartId());
-          } else {
-            showSaveState("⚠ 서버에 저장하지 못했어요 (이 브라우저에만 저장됩니다)");
-          }
-        })
-        .catch(function () {
-          showSaveState("⚠ 서버에 연결할 수 없어요 (이 브라우저에만 저장됩니다)");
-        });
-      }, 600);
-    }
-
-    // 서버에 저장해 둔 장바구니를 꺼내옵니다.
-    function loadCartFromServer() {
-      fetch(SB_URL + "/rest/v1/carts?select=items&id=eq." + myCartId(), { headers: sbHeaders() })
-        .then(function (res) { return res.json(); })
-        .then(function (rows) {
-          if (rows && rows.length > 0 && rows[0].items) {
-            cart = rows[0].items;
-            localStorage.setItem("cart", JSON.stringify(cart));
-            drawCart();
-            showSaveState("☁ 서버에 저장해 둔 장바구니를 불러왔어요");
-          }
-        })
-        .catch(function () {
-          showSaveState("⚠ 서버에 연결할 수 없어요 (이 브라우저에만 저장됩니다)");
-        });
-    }
 
     /* ===== 상품 목록을 서버에서 불러오기 ===== */
 
@@ -1728,7 +1778,7 @@
       for (var i = 0; i < rows.length; i++) {
         var p = rows[i];
 
-        html += '<div class="card ' + p.category + '">'
+        html += '<div class="card ' + p.category + '" data-id="' + p.id + '">'
               +   '<button class="wish" onclick="toggleWish(this)">♡</button>'
               +   '<span class="in-cart"></span>'
               +   (p.is_best   ? '<span class="best">BEST</span>' : '')
