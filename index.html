@@ -355,6 +355,45 @@
       color: white;
     }
 
+    /* ===== 주문서 · 주문 확인 맨 위 제목 ===== */
+    .paper-head {
+      text-align: center;
+      background-color: white;
+      border-top: 5px solid #7fc8f8;
+      border-radius: 20px;
+      padding: 24px 20px;
+      margin-bottom: 22px;
+      box-shadow: 0 3px 10px #dceefc;
+    }
+    .shop-name {
+      font-size: 15px;
+      font-weight: bold;
+      color: #4aa3d8;
+      letter-spacing: 1px;
+      margin: 0 0 8px;
+    }
+    .paper-head h2 {
+      margin: 0;
+      font-size: 26px;
+    }
+    .paper-sub {
+      font-size: 14px;
+      color: #6b7f92;
+      margin: 10px 0 0;
+      line-height: 1.6;
+    }
+    /* 꼭 안 적어도 되는 칸에 붙는 "선택" 표시 */
+    .opt-tag {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 2px 8px;
+      background-color: #eef6fc;
+      color: #9aabbb;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: normal;
+    }
+
     /* ===== 주문서 페이지 ===== */
     .order-page {
       display: none;            /* 평소에는 숨겨둡니다 */
@@ -1123,6 +1162,90 @@
       padding: 25px;
       font-size: 14px;
     }
+    /* ===== 휴대폰 화면에서 주문서가 잘 읽히게 ===== */
+    @media (max-width: 480px) {
+      .order-page,
+      .confirm-page {
+        padding: 26px 14px 60px;
+      }
+
+      /* 맨 위 제목 */
+      .paper-head {
+        padding: 20px 14px;
+        margin-bottom: 18px;
+      }
+      .paper-head h2 {
+        font-size: 22px;
+      }
+      .shop-name {
+        font-size: 14px;
+      }
+      .paper-sub {
+        font-size: 13px;
+      }
+
+      /* 흰 상자 안쪽 여백을 줄여 글이 넓게 보이도록 */
+      .order-box,
+      .confirm-box {
+        padding: 20px 16px;
+      }
+      .order-list {
+        padding: 4px 14px;
+      }
+
+      /* 적는 칸을 손가락으로 누르기 편하게 */
+      .order-box input,
+      .order-box textarea {
+        font-size: 16px;      /* 아이폰에서 화면이 확대되지 않는 크기 */
+        padding: 13px 14px;
+      }
+
+      /* 받는 분 정보: 항목 이름과 내용을 위아래로 */
+      .confirm-row {
+        flex-direction: column;
+        gap: 3px;
+        padding: 10px 0;
+      }
+      .confirm-row b {
+        width: auto;
+      }
+
+      /* 주문 상품 한 줄 */
+      .order-line {
+        gap: 8px;
+        font-size: 13px;
+      }
+      .order-line .a {
+        width: auto;
+      }
+
+      /* 금액 상자 */
+      .order-page .cart-sum,
+      .confirm-page .cart-sum {
+        padding: 18px 16px;
+        font-size: 14px;
+      }
+      .order-page .cart-sum-row.total b,
+      .confirm-page .cart-sum-row.total b {
+        font-size: 19px;
+      }
+
+      /* 아래 버튼은 한 줄에 하나씩 */
+      .order-page .cart-buttons button,
+      .confirm-page .cart-buttons button {
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+
+      .confirm-ask {
+        font-size: 15px;
+      }
+      .order-msg,
+      .confirm-msg {
+        font-size: 13px;
+      }
+    }
+
   </style>
 </head>
 
@@ -1236,8 +1359,12 @@
 
   <!-- ===== 주문서 페이지 ===== -->
   <div class="order-page" id="orderPage">
-    <h2>📝 주문서</h2>
-    <p class="cart-hint">받는 분 정보를 적어주세요.</p>
+    <!-- 맨 위: 가게 이름과 제목 -->
+    <div class="paper-head">
+      <p class="shop-name">☕ 청소년 문구점</p>
+      <h2>📝 주문서</h2>
+      <p class="paper-sub">받는 분 정보를 적어주세요.</p>
+    </div>
 
     <!-- 주문할 상품 (장바구니 내용을 보여주기만 합니다) -->
     <div class="order-list" id="orderList"></div>
@@ -1277,6 +1404,11 @@
         <span class="order-hint">도로명 주소와 상세 주소를 한 칸에 모두 적어주세요.</span>
         <span class="field-msg" id="msgAddr"></span>
       </label>
+
+      <label>배송 메모 <span class="opt-tag">선택</span>
+        <textarea id="orderMemo" placeholder="예) 부재 시 경비실에 맡겨주세요"></textarea>
+        <span class="order-hint">배송 기사님께 전할 말이 있으면 적어주세요. 안 적으셔도 괜찮아요.</span>
+      </label>
     </div>
 
     <p class="order-msg" id="orderMsg"></p>
@@ -1290,8 +1422,12 @@
 
   <!-- ===== 주문 확인 페이지 ===== -->
   <div class="confirm-page" id="confirmPage">
-    <h2>✅ 주문 확인</h2>
-    <p class="cart-hint">아래 내용이 맞는지 한 번 더 확인해 주세요.</p>
+    <!-- 맨 위: 가게 이름과 제목 -->
+    <div class="paper-head">
+      <p class="shop-name">☕ 청소년 문구점</p>
+      <h2>✅ 주문 확인</h2>
+      <p class="paper-sub">아래 내용이 맞는지 한 번 더 확인해 주세요.</p>
+    </div>
 
     <!-- 받는 분 -->
     <div class="confirm-box">
@@ -1304,6 +1440,9 @@
       </div>
       <div class="confirm-row">
         <b>주소</b><span id="seeAddr"></span>
+      </div>
+      <div class="confirm-row">
+        <b>배송 메모</b><span id="seeMemo"></span>
       </div>
     </div>
 
@@ -2337,6 +2476,9 @@
       document.getElementById("seeTel").textContent  = document.getElementById("orderTel").value.trim();
       document.getElementById("seeAddr").textContent = document.getElementById("orderAddr").value.trim();
 
+      var memo = document.getElementById("orderMemo").value.trim();
+      document.getElementById("seeMemo").textContent = memo ? memo : "(없음)";
+
       // 주문할 상품과 수량
       var total = 0;
       var html  = "";
@@ -2427,6 +2569,7 @@
           receiver_name: document.getElementById("orderName").value.trim(),
           receiver_tel:  document.getElementById("orderTel").value.trim(),
           address:       document.getElementById("orderAddr").value.trim(),
+          memo:          document.getElementById("orderMemo").value.trim(),
           items_total:   total,
           shipping_fee:  ship,
           pay_total:     total + ship
