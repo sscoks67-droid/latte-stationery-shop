@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+          // 서버에 있는 것이 내 찜 목록입니다. (비어 있으면 비운 것이 맞습니다)
+          if (!rows) { rows = []; }
+
+          wish = [];          // 서버에 있는 것이 내 장바구니입니다. (비어 있으면 비운 것이 맞습니다)
+          if (!rows) { rows = []; }
+
+          cart = [];<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -1449,9 +1455,8 @@
       fetch(SB_URL + "/rest/v1/wish_items?select=product_id&owner_id=eq." + myCartId(), { headers: sbHeaders() })
         .then(function (res) { return res.json(); })
         .then(function (rows) {
-          if (!rows || rows.length === 0) {
-            return;   // 서버에 없으면 지금 것을 그대로 둡니다
-          }
+          // 서버에 있는 것이 내 찜 목록입니다. (비어 있으면 비운 것이 맞습니다)
+          if (!rows) { rows = []; }
 
           wish = [];
           for (var i = 0; i < rows.length; i++) {
@@ -1568,9 +1573,8 @@
       fetch(url, { headers: sbHeaders() })
         .then(function (res) { return res.json(); })
         .then(function (rows) {
-          if (!rows || rows.length === 0) {
-            return;   // 서버에 아무것도 없으면 지금 장바구니를 그대로 둡니다
-          }
+          // 서버에 있는 것이 내 장바구니입니다. (비어 있으면 비운 것이 맞습니다)
+          if (!rows) { rows = []; }
 
           cart = [];
           for (var i = 0; i < rows.length; i++) {
@@ -1587,6 +1591,23 @@
         .catch(function () {
           showSaveState("⚠ 서버에 연결할 수 없어요 (이 브라우저에만 저장됩니다)");
         });
+    }
+
+    // 로그인·로그아웃으로 사람이 바뀌면, 앞사람 것이 남지 않도록
+    // 장바구니와 찜을 먼저 비우고 내 것을 새로 받아옵니다.
+    function switchOwner() {
+      cart = [];
+      wish = [];
+
+      saveCart();
+      localStorage.setItem("wish", "[]");
+
+      drawCart();
+      markWish();
+      countWish();
+
+      loadCartFromServer();
+      loadWishFromServer();
     }
 
     /* ----- 화면에서 장바구니를 다루는 부분 ----- */
@@ -2071,7 +2092,7 @@
         updateAuthUI();
         authMsg(user.email.split("@")[0] + "님 환영합니다. 💙", false);
 
-        loadCartFromServer();   // 내 계정에 저장된 장바구니 불러오기
+        switchOwner();   // 앞사람 것을 비우고 내 장바구니·찜을 받아옵니다
       })
       .catch(function () {
         authMsg("서버에 연결할 수 없어요.", true);
@@ -2083,6 +2104,7 @@
       user = null;
       localStorage.removeItem("session");
       updateAuthUI();
+      switchOwner();   // 손님용 장바구니·찜으로 되돌립니다
       authMsg("로그아웃했어요. 또 오세요 👋", false);
     }
 
