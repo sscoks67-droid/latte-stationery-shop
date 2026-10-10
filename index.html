@@ -31,17 +31,38 @@
 
     /* 메뉴 */
     nav {
+      display: flex;
+      justify-content: space-between;   /* 왼쪽 메뉴 / 오른쪽 로그인 */
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
       background-color: #ffffff;
-      text-align: center;
-      padding: 15px;
+      padding: 15px 26px;
+    }
+    .nav-left,
+    .nav-right {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
     }
     nav a {
-      margin: 0 15px;
+      margin: 0 12px;
       text-decoration: none;
       color: #33475b;
       font-weight: bold;
     }
-
+    /* 오른쪽 메뉴는 파란색으로 구분합니다 */
+    .nav-right a {
+      color: #4aa3d8;
+      margin: 0 4px 0 14px;
+    }
+    /* 로그아웃은 로그인했을 때만 보입니다 */
+    #logoutLink {
+      display: none;
+      font-weight: normal;
+      font-size: 14px;
+      color: #9aabbb;
+    }
     /* 큰 배너 */
     .banner {
       background-color: #d9f0ff;
@@ -880,12 +901,20 @@
 
   <!-- 메뉴 4개 -->
   <nav>
-    <a href="#" onclick="showShop(); return false;">홈</a>
-    <a href="#">신상품</a>
-    <a href="#">인기상품</a>
-    <a href="#">고객센터</a>
-    <a href="#" onclick="openCart(); return false;">🛒 장바구니</a>
-    <a href="#" id="authLink" onclick="openAuth(); return false;">👤 로그인</a>
+    <!-- 왼쪽: 가게 메뉴 -->
+    <div class="nav-left">
+      <a href="#" onclick="showShop(); return false;">홈</a>
+      <a href="#">신상품</a>
+      <a href="#">인기상품</a>
+      <a href="#">고객센터</a>
+    </div>
+
+    <!-- 오른쪽: 장바구니 · 로그인 / 로그아웃 -->
+    <div class="nav-right">
+      <a href="#" onclick="openCart(); return false;">🛒 장바구니</a>
+      <a href="#" id="authLink" onclick="openAuth(); return false;">👤 로그인</a>
+      <a href="#" id="logoutLink" onclick="signOut(); return false;">로그아웃</a>
+    </div>
   </nav>
 
   <!-- ===== 상품 목록 화면 ===== -->
@@ -2074,6 +2103,7 @@
       var forms   = document.getElementById("authForms");
       var welcome = document.getElementById("authWelcome");
       var link    = document.getElementById("authLink");
+      var out     = document.getElementById("logoutLink");
       var hello   = document.getElementById("welcomeMsg");
 
       if (user) {
@@ -2089,6 +2119,7 @@
         hello.style.display = "block";
 
         link.textContent = "👤 " + name + "님";
+        out.style.display = "inline";    // 로그아웃 보이기
       } else {
         forms.style.display   = "flex";
         welcome.style.display = "none";
@@ -2097,6 +2128,7 @@
         hello.style.display = "none";
 
         link.textContent = "👤 로그인";
+        out.style.display = "none";      // 로그아웃 숨기기
       }
     }
 
