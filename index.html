@@ -217,17 +217,19 @@
       border-radius: 20px;
       margin-top: 12px;
     }
-    }
 
-    /* 이모지 그림 상자 (지금은 사진을 쓰지만, 다시 이모지로 바꿀 때 필요합니다) */
+    /* 상품 그림 (이모지) 상자 */
     .emoji {
-      font-size: 65px;
-      line-height: 140px;
+      aspect-ratio: 1 / 1;      /* 가로:세로 = 1:1 (정사각형) */
+      display: flex;
+      align-items: center;      /* 위아래 가운데 */
+      justify-content: center;  /* 좌우 가운데 */
+      font-size: 80px;
       background: linear-gradient(#eaf7ff, #fdf0f5);
       border-radius: 15px;
     }
 
-    /* 상품 사진 */
+    /* 상품 사진 (나중에 진짜 사진 파일을 넣을 때 쓰는 모양입니다) */
     .photo {
       width: 100%;
       aspect-ratio: 1 / 1;   /* 가로:세로 = 10:10 (정사각형) */
@@ -268,6 +270,258 @@
     .buy:hover {
       background-color: #7fc8f8;
       color: white;
+    }
+
+    /* 헤더의 장바구니 개수 (누르면 장바구니가 열립니다) */
+    .cart-count {
+      display: inline-block;
+      background-color: white;
+      color: #4aa3d8;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-top: 12px;
+      margin-left: 6px;
+      cursor: pointer;
+    }
+
+    /* 담기 버튼을 눌렀을 때 잠깐 바뀌는 모습 */
+    .buy.added {
+      background-color: #8fd6b4;
+      color: white;
+    }
+
+    /* ===== 장바구니 페이지 ===== */
+    .cart-page {
+      display: none;            /* 평소에는 숨겨둡니다 */
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 45px 20px 70px;
+    }
+    .cart-page h2 {
+      font-size: 26px;
+      margin: 0 0 6px;
+      text-align: center;
+    }
+    .cart-hint {
+      text-align: center;
+      font-size: 14px;
+      color: #6b7f92;
+      margin: 0 0 28px;
+    }
+
+    /* 표 제목 줄 (상품 / 개수 / 금액) */
+    .cart-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 18px 10px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #8fa2b4;
+      white-space: nowrap;
+    }
+
+    /* 담긴 상품 목록 상자 */
+    #cartList {
+      background-color: white;
+      border-radius: 20px;
+      padding: 4px 18px;
+      box-shadow: 0 3px 10px #dceefc;
+    }
+
+    /* 담긴 상품 한 줄 */
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 0;
+      border-bottom: 1px dashed #dceefc;
+      font-size: 15px;
+      white-space: nowrap;      /* 한 줄로만 보이게 (줄바꿈 금지) */
+    }
+    .cart-item:last-child {
+      border-bottom: none;      /* 마지막 줄은 선을 없앱니다 */
+    }
+
+    /* 한 줄 안의 칸들 */
+    .cart-emoji {
+      width: 34px;
+      font-size: 26px;
+      flex: none;
+    }
+    .cart-name {
+      flex: 1;                  /* 남는 자리를 모두 차지 */
+      min-width: 0;             /* 이름이 길어도 줄어들 수 있게 */
+      overflow: hidden;
+      text-overflow: ellipsis;  /* 너무 길면 ... 으로 */
+    }
+    .cart-amount {
+      width: 96px;
+      text-align: center;
+      flex: none;
+    }
+    .cart-price {
+      width: 95px;
+      text-align: right;
+      color: #ff7aa2;
+      font-weight: bold;
+      flex: none;
+    }
+    .cart-remove {
+      width: 22px;
+      flex: none;
+    }
+
+    /* 개수 늘리기 / 줄이기 버튼 */
+    .cart-amount button {
+      background-color: #eaf7ff;
+      color: #4aa3d8;
+      border: none;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .cart-amount b {
+      display: inline-block;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    /* 상품 빼기(X) 버튼 */
+    .cart-remove {
+      background: none;
+      border: none;
+      color: #b9c7d4;
+      font-size: 16px;
+      padding: 0;
+      cursor: pointer;
+    }
+    .cart-remove:hover {
+      color: #ff7aa2;
+    }
+
+    /* 장바구니가 비었을 때 */
+    .cart-empty {
+      text-align: center;
+      color: #9aabbb;
+      padding: 45px 0;
+      margin: 0;
+      line-height: 1.8;
+    }
+
+    /* 금액 계산 상자 */
+    .cart-sum {
+      background-color: white;
+      border: 2px dashed #bfe6ff;
+      border-radius: 20px;
+      padding: 20px 24px;
+      margin-top: 22px;
+      font-size: 15px;
+    }
+    .cart-sum-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+    }
+    /* 맨 아래 결제 금액 줄 */
+    .cart-sum-row.total {
+      border-top: 1px solid #e4f1fb;
+      margin-top: 9px;
+      padding-top: 15px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+    .cart-sum-row.total b {
+      color: #ff4d79;
+      font-size: 22px;
+    }
+    /* 무료 배송 안내 */
+    .cart-free {
+      text-align: right;
+      color: #4aa3d8;
+      font-size: 13px;
+      margin: 12px 0 0;
+    }
+
+    /* 장바구니 페이지 아래 버튼 3개 */
+    .cart-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+    .cart-buttons button {
+      flex: 1;
+      min-width: 150px;
+    }
+    .btn-keep {
+      background-color: #eaf7ff;
+      color: #4aa3d8;
+    }
+    .btn-order {
+      background-color: #ff7aa2;
+    }
+    .btn-clear {
+      background-color: #ffffff;
+      color: #9aabbb;
+      border: 2px solid #e8f1f8;
+    }
+
+    /* 화면 오른쪽 아래에 항상 떠 있는 장바구니 버튼 */
+    .cart-fab {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 90;
+      width: 62px;
+      height: 62px;
+      padding: 0;
+      background-color: #7fc8f8;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 25px;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(127, 200, 248, 0.7);
+    }
+    .cart-fab:hover {
+      background-color: #4aa3d8;
+    }
+    /* 버튼 위에 붙는 빨간 숫자 */
+    .cart-fab span {
+      display: none;             /* 담은 게 없으면 숨깁니다 */
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      min-width: 23px;
+      height: 23px;
+      line-height: 23px;
+      padding: 0 5px;
+      box-sizing: border-box;
+      background-color: #ff4d79;
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 12px;
+    }
+
+    /* 상품 카드에 "몇 개 담겼는지" 표시 */
+    .in-cart {
+      display: none;             /* 담기 전에는 숨깁니다 */
+      position: absolute;
+      top: 46px;
+      right: 8px;
+      background-color: #7fc8f8;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 4px 9px;
+      border-radius: 12px;
     }
 
     /* 쇼핑몰 소개 */
@@ -404,15 +658,20 @@
     <h1>☕ 청소년 문구점</h1>
     <p>공부가 즐거워지는 귀여운 학생 문구점 ✏️</p>
     <p class="wish-count">찜한 상품 <span id="wishCount">0</span>개 💗</p>
+    <p class="cart-count" onclick="openCart()">장바구니 <span id="cartCount">0</span>개 🛒</p>
   </header>
 
   <!-- 메뉴 4개 -->
   <nav>
-    <a href="#">홈</a>
+    <a href="#" onclick="showShop(); return false;">홈</a>
     <a href="#">신상품</a>
     <a href="#">인기상품</a>
     <a href="#">고객센터</a>
+    <a href="#" onclick="openCart(); return false;">🛒 장바구니</a>
   </nav>
+
+  <!-- ===== 상품 목록 화면 ===== -->
+  <div id="shopPage">
 
   <!-- 큰 배너 -->
   <div class="banner">
@@ -441,193 +700,212 @@
 
     <div class="card pen">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="best">BEST</span>
       <span class="badge">30% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/pencils?lock=11" alt="파스텔 연필 세트">
+      <div class="emoji">✏️</div>
       <h3>파스텔 연필 세트</h3>
       <p class="price">3,500원</p>
       <p class="old-price">5,000원</p>
-      <button class="buy" onclick="addCart('파스텔 연필 세트')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card paper">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">30% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/notebook?lock=12" alt="구름 무늬 노트">
+      <div class="emoji">📒</div>
       <h3>구름 무늬 노트</h3>
       <p class="price">4,200원</p>
       <p class="old-price">6,000원</p>
-      <button class="buy" onclick="addCart('구름 무늬 노트')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card pen">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">26% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/highlighter?lock=13" alt="말랑 형광펜 5색">
+      <div class="emoji">🌈</div>
       <h3>말랑 형광펜 5색</h3>
       <p class="price">5,900원</p>
       <p class="old-price">8,000원</p>
-      <button class="buy" onclick="addCart('말랑 형광펜 5색')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card art">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">25% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/crayons?lock=14" alt="말랑 크레파스 12색">
+      <div class="emoji">🖍️</div>
       <h3>말랑 크레파스 12색</h3>
       <p class="price">6,000원</p>
       <p class="old-price">8,000원</p>
-      <button class="buy" onclick="addCart('말랑 크레파스 12색')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">20% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/eraser?lock=15" alt="말랑 지우개 3개입">
+      <div class="emoji">🧽</div>
       <h3>말랑 지우개 3개입</h3>
       <p class="price">2,400원</p>
       <p class="old-price">3,000원</p>
-      <button class="buy" onclick="addCart('말랑 지우개 3개입')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card paper">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">15% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/paper?lock=16" alt="A4 복사지 500매">
+      <div class="emoji">📄</div>
       <h3>A4 복사지 500매</h3>
       <p class="price">4,250원</p>
       <p class="old-price">5,000원</p>
-      <button class="buy" onclick="addCart('A4 복사지 500매')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">28% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/tape?lock=17" alt="스카치테이프 2개입">
+      <div class="emoji">🩹</div>
       <h3>스카치테이프 2개입</h3>
       <p class="price">1,800원</p>
       <p class="old-price">2,500원</p>
-      <button class="buy" onclick="addCart('스카치테이프 2개입')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card pen">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">22% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/pencil?lock=18" alt="샤프심 0.5mm 5통">
+      <div class="emoji">✒️</div>
       <h3>샤프심 0.5mm 5통</h3>
       <p class="price">2,700원</p>
       <p class="old-price">3,500원</p>
-      <button class="buy" onclick="addCart('샤프심 0.5mm 5통')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card pen">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">24% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/pen?lock=19" alt="파스텔 볼펜 5색">
+      <div class="emoji">🖊️</div>
       <h3>파스텔 볼펜 5색</h3>
       <p class="price">3,800원</p>
       <p class="old-price">5,000원</p>
-      <button class="buy" onclick="addCart('파스텔 볼펜 5색')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card paper">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">18% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/diary?lock=20" alt="몽글 다이어리">
+      <div class="emoji">📔</div>
       <h3>몽글 다이어리</h3>
       <p class="price">9,800원</p>
       <p class="old-price">12,000원</p>
-      <button class="buy" onclick="addCart('몽글 다이어리')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card paper">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">20% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/notepad?lock=21" alt="떡메모지 100매">
+      <div class="emoji">📝</div>
       <h3>떡메모지 100매</h3>
       <p class="price">2,800원</p>
       <p class="old-price">3,500원</p>
-      <button class="buy" onclick="addCart('떡메모지 100매')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card art">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">27% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/watercolor?lock=22" alt="수채화 물감 12색">
+      <div class="emoji">🎨</div>
       <h3>수채화 물감 12색</h3>
       <p class="price">8,000원</p>
       <p class="old-price">11,000원</p>
-      <button class="buy" onclick="addCart('수채화 물감 12색')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card art">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">23% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/paintbrush?lock=23" alt="그림 붓 3종 세트">
+      <div class="emoji">🖌️</div>
       <h3>그림 붓 3종 세트</h3>
       <p class="price">4,600원</p>
       <p class="old-price">6,000원</p>
-      <button class="buy" onclick="addCart('그림 붓 3종 세트')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">30% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/ruler?lock=24" alt="삼각자 3종 세트">
+      <div class="emoji">📐</div>
       <h3>삼각자 3종 세트</h3>
       <p class="price">2,100원</p>
       <p class="old-price">3,000원</p>
-      <button class="buy" onclick="addCart('삼각자 3종 세트')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">25% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/scissors?lock=25" alt="안전 가위">
+      <div class="emoji">✂️</div>
       <h3>안전 가위</h3>
       <p class="price">3,000원</p>
       <p class="old-price">4,000원</p>
-      <button class="buy" onclick="addCart('안전 가위')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">21% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/paperclip?lock=26" alt="클립·집게 세트">
+      <div class="emoji">📎</div>
       <h3>클립·집게 세트</h3>
       <p class="price">1,900원</p>
       <p class="old-price">2,400원</p>
-      <button class="buy" onclick="addCart('클립·집게 세트')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">26% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/bookmark?lock=27" alt="하트 책갈피 5개">
+      <div class="emoji">🔖</div>
       <h3>하트 책갈피 5개</h3>
       <p class="price">2,200원</p>
       <p class="old-price">3,000원</p>
-      <button class="buy" onclick="addCart('하트 책갈피 5개')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">19% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/pencilcase?lock=28" alt="곰돌이 필통">
+      <div class="emoji">🧸</div>
       <h3>곰돌이 필통</h3>
       <p class="price">6,500원</p>
       <p class="old-price">8,000원</p>
-      <button class="buy" onclick="addCart('곰돌이 필통')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
     <div class="card etc">
       <button class="wish" onclick="toggleWish(this)">♡</button>
+      <span class="in-cart"></span>
       <span class="badge">33% 할인</span>
-      <img class="photo" src="https://loremflickr.com/400/400/stickers?lock=29" alt="무지개 스티커 팩">
+      <div class="emoji">🌟</div>
       <h3>무지개 스티커 100장</h3>
       <p class="price">2,000원</p>
       <p class="old-price">3,000원</p>
-      <button class="buy" onclick="addCart('무지개 스티커 100장')">장바구니 담기 🛒</button>
+      <button class="buy" onclick="addCart(this)">장바구니 담기 🛒</button>
     </div>
 
   </div>
@@ -680,11 +958,59 @@
     </div>
   </div>
 
+  </div>
+  <!-- ===== 상품 목록 화면 끝 ===== -->
+
+  <!-- ===== 장바구니 페이지 (상품 목록과 번갈아 보입니다) ===== -->
+  <div class="cart-page" id="cartPage">
+    <h2>🛒 장바구니</h2>
+    <p class="cart-hint">담은 상품을 확인하고 개수를 바꿀 수 있어요.</p>
+
+    <!-- 표 제목 줄 -->
+    <div class="cart-head">
+      <span class="cart-emoji"></span>
+      <span class="cart-name">상품</span>
+      <span class="cart-amount">개수</span>
+      <span class="cart-price">금액</span>
+      <span class="cart-remove"></span>
+    </div>
+
+    <!-- 담긴 상품이 여기에 들어갑니다 -->
+    <div id="cartList"></div>
+
+    <!-- 금액 계산 -->
+    <div class="cart-sum">
+      <div class="cart-sum-row">
+        <span>상품 총금액</span>
+        <span><span id="cartTotal">0</span>원</span>
+      </div>
+      <div class="cart-sum-row">
+        <span>배송비</span>
+        <span><span id="cartShip">0</span>원</span>
+      </div>
+      <div class="cart-sum-row total">
+        <span>결제 금액</span>
+        <b><span id="cartPay">0</span>원</b>
+      </div>
+      <p class="cart-free" id="cartFree"></p>
+    </div>
+
+    <!-- 아래 버튼 3개 -->
+    <div class="cart-buttons">
+      <button class="btn-keep"  onclick="showShop()">◀ 계속 쇼핑하기</button>
+      <button class="btn-clear" onclick="clearCart()">장바구니 비우기</button>
+      <button class="btn-order" onclick="order()">주문하기 🎁</button>
+    </div>
+  </div>
+
   <!-- 맨 아래: 연락처 -->
   <footer>
     <p>📞 010-1234-5678 &nbsp; | &nbsp; ✉️ latte@shop.com</p>
     <p>© 2026 라떼 문구점</p>
   </footer>
+
+  <!-- 어디서든 보이는 장바구니 버튼 -->
+  <button class="cart-fab" onclick="openCart()">🛒<span id="fabCount">0</span></button>
 
   <!-- 신상품 알림 팝업 -->
   <div class="popup" id="popup">
@@ -701,6 +1027,7 @@
       </label>
     </div>
   </div>
+
 
   <script>
     /* ★ 신상품을 새로 낼 때마다 이 숫자를 1 올려주세요. ★
@@ -765,10 +1092,6 @@
       document.querySelector(".products").scrollIntoView({ behavior: "smooth" });
     }
 
-    // 장바구니 버튼을 누르면 상품 이름이 나옵니다.
-    function addCart(name) {
-      alert(name + " 을(를) 장바구니에 담았어요! 🛒");
-    }
 
     // 카테고리 버튼을 누르면 그 분류의 상품만 보입니다.
     function showCategory(cat, btn) {
@@ -846,6 +1169,229 @@
       var n = document.querySelectorAll(".wish.on").length;
       document.getElementById("wishCount").textContent = n;
     }
+
+    /* ===== 여기부터 장바구니 ===== */
+
+    var cart = [];   // 담은 상품들이 들어가는 목록
+
+    // 담기 버튼을 누르면 그 카드의 상품을 장바구니에 넣습니다.
+    function addCart(btn) {
+      var card  = btn.closest(".card");                 // 버튼이 들어있는 상품 카드
+      var name  = card.querySelector("h3").textContent; // 상품 이름
+      var price = Number(card.querySelector(".price").textContent.replace(/[^0-9]/g, ""));  // 3,500원 -> 3500
+      var icon  = card.querySelector(".emoji").textContent;  // 상품 그림(이모지)
+
+      // 이미 담은 상품이면 개수만 1 늘립니다.
+      var item = findItem(name);
+      if (item) {
+        item.count++;
+      } else {
+        cart.push({ name: name, price: price, icon: icon, count: 1 });
+      }
+
+      saveCart();
+      drawCart();
+
+      // 버튼을 잠깐 초록색으로 바꿔서 담긴 것을 알려줍니다.
+      btn.textContent = "담았어요! ✔";
+      btn.classList.add("added");
+      setTimeout(function () {
+        btn.textContent = "장바구니 담기 🛒";
+        btn.classList.remove("added");
+      }, 900);
+    }
+
+    // 장바구니에서 이름이 같은 상품을 찾습니다. (없으면 null)
+    function findItem(name) {
+      for (var i = 0; i < cart.length; i++) {
+        if (cart[i].name === name) {
+          return cart[i];
+        }
+      }
+      return null;
+    }
+
+    // 개수를 1 늘립니다.
+    function plusCart(name) {
+      var item = findItem(name);
+      if (item) {
+        item.count++;
+      }
+      saveCart();
+      drawCart();
+    }
+
+    // 개수를 1 줄입니다. (1개에서 더 줄이면 장바구니에서 빠집니다)
+    function minusCart(name) {
+      var item = findItem(name);
+      if (item) {
+        item.count--;
+        if (item.count < 1) {
+          removeCart(name);
+          return;
+        }
+      }
+      saveCart();
+      drawCart();
+    }
+
+    // 상품 하나를 장바구니에서 뺍니다.
+    function removeCart(name) {
+      var left = [];
+      for (var i = 0; i < cart.length; i++) {
+        if (cart[i].name !== name) {
+          left.push(cart[i]);
+        }
+      }
+      cart = left;
+      saveCart();
+      drawCart();
+    }
+
+    // 장바구니를 모두 비웁니다.
+    function clearCart() {
+      if (cart.length === 0) {
+        return;
+      }
+      if (confirm("장바구니를 모두 비울까요?")) {
+        cart = [];
+        saveCart();
+        drawCart();
+      }
+    }
+
+    // 장바구니 내용을 화면에 그립니다.
+    function drawCart() {
+      var total = 0;   // 합계 금액
+      var count = 0;   // 담은 상품 개수
+      var html  = "";
+
+      for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        total += item.price * item.count;
+        count += item.count;
+
+        var icon = item.icon || "🛒";   // 예전에 담은 상품은 그림이 없을 수 있어요
+
+        html += '<div class="cart-item">'
+              +   '<span class="cart-emoji">' + icon + '</span>'
+              +   '<span class="cart-name" title="' + item.name + '">' + item.name + '</span>'
+              +   '<span class="cart-amount">'
+              +     '<button onclick="minusCart(\'' + item.name + '\')">−</button>'
+              +     '<b>' + item.count + '</b>'
+              +     '<button onclick="plusCart(\'' + item.name + '\')">+</button>'
+              +   '</span>'
+              +   '<span class="cart-price">' + won(item.price * item.count) + '원</span>'
+              +   '<button class="cart-remove" onclick="removeCart(\'' + item.name + '\')">✕</button>'
+              + '</div>';
+      }
+
+      if (cart.length === 0) {
+        html = '<p class="cart-empty">아직 담은 상품이 없어요 🛍️<br>마음에 드는 문구를 담아보세요!</p>';
+      }
+
+      document.getElementById("cartList").innerHTML = html;
+      document.getElementById("cartTotal").textContent = won(total);
+      document.getElementById("cartCount").textContent = count;
+
+      // 배송비: 3만원 이상 담으면 무료, 그 아래는 3,000원
+      var ship = 0;
+      if (total > 0 && total < 30000) {
+        ship = 3000;
+      }
+
+      document.getElementById("cartShip").textContent = won(ship);
+      document.getElementById("cartPay").textContent  = won(total + ship);
+
+      // 무료 배송까지 얼마 남았는지 알려줍니다.
+      var free = document.getElementById("cartFree");
+      if (total === 0) {
+        free.textContent = "";
+      } else if (ship === 0) {
+        free.textContent = "🚚 무료 배송이에요!";
+      } else {
+        free.textContent = "🚚 " + won(30000 - total) + "원 더 담으면 무료 배송!";
+      }
+
+      // 오른쪽 아래 장바구니 버튼의 빨간 숫자
+      var fab = document.getElementById("fabCount");
+      fab.textContent = count;
+      if (count === 0) {
+        fab.style.display = "none";    // 담은 게 없으면 숫자를 숨깁니다
+      } else {
+        fab.style.display = "block";
+      }
+
+      markCards();   // 상품 카드에도 담긴 개수를 표시합니다
+    }
+
+    // 어떤 상품이 몇 개 담겨 있는지 상품 카드에 표시합니다.
+    function markCards() {
+      var cards = document.querySelectorAll(".card");
+
+      for (var i = 0; i < cards.length; i++) {
+        var name  = cards[i].querySelector("h3").textContent;
+        var badge = cards[i].querySelector(".in-cart");
+        var item  = findItem(name);
+
+        if (item) {
+          badge.textContent = "🛒 " + item.count + "개";
+          badge.style.display = "block";
+        } else {
+          badge.style.display = "none";
+        }
+      }
+    }
+
+    // 숫자에 쉼표를 넣어줍니다. (3500 -> 3,500)
+    function won(n) {
+      return n.toLocaleString();
+    }
+
+    // 장바구니 페이지를 보여줍니다. (상품 목록은 숨깁니다)
+    function openCart() {
+      document.getElementById("shopPage").style.display = "none";
+      document.getElementById("cartPage").style.display = "block";
+      document.querySelector(".cart-fab").style.display = "none";
+      window.scrollTo(0, 0);   // 맨 위로 올려줍니다
+    }
+
+    // 다시 상품 목록 화면으로 돌아갑니다.
+    function showShop() {
+      document.getElementById("cartPage").style.display = "none";
+      document.getElementById("shopPage").style.display = "block";
+      document.querySelector(".cart-fab").style.display = "block";
+      window.scrollTo(0, 0);
+    }
+
+    // 주문하기 버튼을 누르면
+    function order() {
+      if (cart.length === 0) {
+        alert("먼저 담고 싶은 상품을 골라주세요 🛍️");
+        return;
+      }
+
+      alert("주문이 접수되었어요! 감사합니다 💙");
+      cart = [];           // 장바구니를 비웁니다
+      saveCart();
+      drawCart();
+    }
+    // 장바구니를 기억해 둡니다. (창을 닫았다 열어도 그대로 남아요)
+    function saveCart() {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    // 페이지를 열 때 기억해 둔 장바구니를 꺼내옵니다.
+    function loadCart() {
+      var saved = localStorage.getItem("cart");
+      if (saved) {
+        cart = JSON.parse(saved);
+      }
+      drawCart();
+    }
+
+    loadCart();   // 페이지가 열릴 때 실행
+
   </script>
 
 </body>
