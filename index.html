@@ -349,6 +349,108 @@
       width: 100%;
       margin-top: 6px;
     }
+    /* 약관 동의 (가입 화면) */
+    .terms {
+      margin: 4px 0 18px;
+      border: 2px solid #e4f1fb;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .terms label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: normal;
+      color: #4a6276;
+      margin: 0;
+      padding: 9px 16px;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+    .terms input {
+      display: inline;
+      width: 17px;
+      height: 17px;
+      margin: 0;
+      padding: 0;
+      flex: none;
+      accent-color: #7fc8f8;
+      cursor: pointer;
+    }
+    /* 맨 위 "전체 동의합니다" 줄 */
+    .terms-all {
+      align-items: flex-start !important;
+      padding: 16px !important;
+      background-color: #f7fcff;
+      border-bottom: 2px solid #e4f1fb;
+    }
+    .terms-all b {
+      display: block;
+      font-size: 15px;
+      color: #33475b;
+    }
+    .terms-all em {
+      display: block;
+      margin-top: 3px;
+      font-style: normal;
+      font-size: 12px;
+      color: #9aabbb;
+    }
+    /* [필수] / [선택] 표시 */
+    .req {
+      color: #ff4d79;
+      font-weight: bold;
+      flex: none;
+    }
+    .opt {
+      color: #9aabbb;
+      font-weight: bold;
+      flex: none;
+    }
+    .terms-name {
+      flex: 1;
+    }
+    /* 오른쪽 끝 "보기 >" */
+    .terms-view {
+      flex: none;
+      color: #9aabbb;
+      font-size: 12px;
+      text-decoration: underline;
+    }
+    .terms-view:hover {
+      color: #4aa3d8;
+    }
+    /* 약관 전문 (보기를 누르면 열립니다) */
+    .terms-text {
+      display: none;
+      margin: 0 16px 10px 41px;
+      padding: 12px 14px;
+      max-height: 150px;
+      overflow-y: auto;
+      background-color: #f7fcff;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.8;
+      color: #6b7f92;
+      word-break: keep-all;
+    }
+    /* 광고 수신 하위 항목 (문자 / 이메일) */
+    .terms-sub {
+      display: flex;
+      gap: 6px;
+      padding: 0 16px 12px 33px;
+    }
+    .terms-sub label {
+      font-size: 12px;
+      color: #6b7f92;
+      padding: 4px 8px;
+    }
+    .terms-sub input {
+      width: 15px;
+      height: 15px;
+    }
+
     /* 안내 글 (초록=성공, 분홍=오류) */
     .auth-msg {
       text-align: center;
@@ -1094,6 +1196,100 @@
         <label>비밀번호 확인
           <input type="password" id="joinPw2" placeholder="한 번 더 입력">
         </label>
+
+        <!-- 약관 동의 (쿠팡 가입 화면과 같은 구성) -->
+        <div class="terms">
+          <label class="terms-all">
+            <input type="checkbox" id="agreeAll" onclick="toggleAllTerms(this)">
+            <span>
+              <b>전체 동의합니다.</b>
+              <em>선택항목에 대한 동의 포함</em>
+            </span>
+          </label>
+
+          <label>
+            <input type="checkbox" class="agree" id="agreeAge" data-need="1" onclick="syncAllTerms()">
+            <span class="req">[필수]</span>
+            <span class="terms-name">만 14세 이상입니다</span>
+          </label>
+
+          <label>
+            <input type="checkbox" class="agree" id="agreeUse" data-need="1" onclick="syncAllTerms()">
+            <span class="req">[필수]</span>
+            <span class="terms-name">라떼 문구점 이용약관 동의</span>
+            <span class="terms-view" onclick="openTerms(event, 'tUse')">보기 &gt;</span>
+          </label>
+          <div class="terms-text" id="tUse">
+            제1조 (목적) 이 약관은 라떼 문구점(이하 "가게")이 제공하는 온라인 쇼핑 서비스의
+            이용 조건과 절차를 정하는 것을 목적으로 합니다.<br>
+            제2조 (회원가입) 회원은 이메일 주소와 비밀번호를 등록하여 가입하며,
+            사실과 다른 정보를 적으면 서비스 이용이 제한될 수 있습니다.<br>
+            제3조 (회원의 의무) 회원은 비밀번호를 스스로 관리해야 하며,
+            다른 사람에게 빌려주거나 알려주어서는 안 됩니다.<br>
+            제4조 (주문) 주문은 회원이 장바구니에 담은 상품을 확인하고
+            주문하기를 누른 때에 신청됩니다.<br>
+            제5조 (교환·환불) 받으신 날부터 7일 이내에 신청할 수 있습니다.
+            다만 이미 사용한 제품은 어렵습니다.<br>
+            제6조 (탈퇴) 회원은 언제든지 탈퇴할 수 있으며, 탈퇴 시 회원 정보는 삭제됩니다.
+          </div>
+
+          <label>
+            <input type="checkbox" class="agree" id="agreePay" data-need="1" onclick="syncAllTerms()">
+            <span class="req">[필수]</span>
+            <span class="terms-name">전자금융거래 이용약관 동의</span>
+            <span class="terms-view" onclick="openTerms(event, 'tPay')">보기 &gt;</span>
+          </label>
+          <div class="terms-text" id="tPay">
+            제1조 (목적) 가게가 제공하는 전자결제 서비스의 이용 조건을 정합니다.<br>
+            제2조 (결제 수단) 회원은 신용카드, 계좌이체 등 가게가 정한 방법으로 결제할 수 있습니다.<br>
+            제3조 (거래 기록) 결제 내역은 관련 법령이 정한 기간 동안 보관됩니다.<br>
+            제4조 (오류의 정정) 결제에 오류가 생긴 경우 회원은 가게에 정정을 요청할 수 있고,
+            가게는 확인 후 바로 처리합니다.
+          </div>
+
+          <label>
+            <input type="checkbox" class="agree" id="agreePrivacy" data-need="1" onclick="syncAllTerms()">
+            <span class="req">[필수]</span>
+            <span class="terms-name">개인정보 수집 및 이용 동의</span>
+            <span class="terms-view" onclick="openTerms(event, 'tPri')">보기 &gt;</span>
+          </label>
+          <div class="terms-text" id="tPri">
+            <b>수집 항목</b> 이메일 주소, 비밀번호(암호화 저장), 장바구니에 담은 상품 정보<br>
+            <b>수집 목적</b> 회원 확인, 장바구니 저장, 주문 처리, 고객 문의 응대<br>
+            <b>보유 기간</b> 회원 탈퇴 시까지 (법령에 따라 보관이 필요하면 그 기간까지)<br>
+            <b>거부 권리</b> 동의를 거부하실 수 있으나, 그 경우 회원가입이 어렵습니다.
+          </div>
+
+          <label>
+            <input type="checkbox" class="agree" id="agreePrivacyOpt" onclick="syncAllTerms()">
+            <span class="opt">[선택]</span>
+            <span class="terms-name">개인정보 수집 및 이용 동의</span>
+            <span class="terms-view" onclick="openTerms(event, 'tPriOpt')">보기 &gt;</span>
+          </label>
+          <div class="terms-text" id="tPriOpt">
+            <b>수집 항목</b> 생년월일, 성별, 관심 상품 분류<br>
+            <b>수집 목적</b> 손님께 맞는 상품 추천, 이벤트 안내<br>
+            <b>보유 기간</b> 회원 탈퇴 시까지<br>
+            <b>거부 권리</b> 동의하지 않으셔도 회원가입과 상품 구매에는 아무 문제가 없습니다.
+          </div>
+
+          <label>
+            <input type="checkbox" class="agree" id="agreeAd" onclick="toggleAdChild(this)">
+            <span class="opt">[선택]</span>
+            <span class="terms-name">광고성 정보 수신 동의</span>
+          </label>
+          <div class="terms-sub">
+            <label>
+              <input type="checkbox" class="ad-child" id="agreeAdSms" onclick="syncAdParent()">
+              문자 메시지
+            </label>
+            <label>
+              <input type="checkbox" class="ad-child" id="agreeAdMail" onclick="syncAdParent()">
+              이메일
+            </label>
+          </div>
+        </div>
+
         <button class="btn-order" onclick="signUp()">가입하기 🎉</button>
       </div>
 
@@ -1650,6 +1846,84 @@
     }
 
 
+
+    /* ===== 약관 동의 ===== */
+
+    // "보기 >" 를 누르면 약관 전문을 펼치거나 접습니다.
+    function openTerms(e, id) {
+      e.preventDefault();
+      e.stopPropagation();   // 체크박스가 같이 눌리지 않게 합니다
+
+      var box = document.getElementById(id);
+      box.style.display = (box.style.display === "block") ? "none" : "block";
+    }
+
+    // "전체 동의" 를 누르면 아래 항목이 모두 따라 켜지거나 꺼집니다.
+    function toggleAllTerms(box) {
+      var list = document.querySelectorAll(".terms .agree, .terms .ad-child");
+
+      for (var i = 0; i < list.length; i++) {
+        list[i].checked = box.checked;
+      }
+    }
+
+    // 광고 수신에 체크하면 문자·이메일도 함께 켜집니다.
+    function toggleAdChild(box) {
+      var list = document.querySelectorAll(".ad-child");
+
+      for (var i = 0; i < list.length; i++) {
+        list[i].checked = box.checked;
+      }
+      syncAllTerms();
+    }
+
+    // 문자·이메일 중 하나라도 켜지면 광고 수신도 켭니다.
+    function syncAdParent() {
+      var list = document.querySelectorAll(".ad-child");
+      var any  = false;
+
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].checked) {
+          any = true;
+        }
+      }
+      document.getElementById("agreeAd").checked = any;
+      syncAllTerms();
+    }
+
+    // 항목 하나를 누를 때마다 "전체 동의" 표시를 맞춰줍니다.
+    function syncAllTerms() {
+      var list = document.querySelectorAll(".terms .agree, .terms .ad-child");
+      var all  = true;
+
+      for (var i = 0; i < list.length; i++) {
+        if (!list[i].checked) {
+          all = false;
+        }
+      }
+      document.getElementById("agreeAll").checked = all;
+    }
+
+    // [필수] 약관에 모두 동의했는지 확인합니다.
+    function termsOk() {
+      var need = document.querySelectorAll(".terms .agree[data-need]");
+
+      for (var i = 0; i < need.length; i++) {
+        if (!need[i].checked) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // 가입이 끝나면 체크를 모두 풉니다.
+    function clearTerms() {
+      var list = document.querySelectorAll(".terms input");
+
+      for (var i = 0; i < list.length; i++) {
+        list[i].checked = false;
+      }
+    }
     /* ===== 회원가입 · 로그인 ===== */
 
     var user = null;   // 로그인한 손님 정보 (로그인 전에는 null)
@@ -1693,13 +1967,25 @@
         authMsg("비밀번호 확인이 서로 달라요.", true);
         return;
       }
+      if (!termsOk()) {
+        authMsg("[필수] 항목에 모두 동의해 주세요.", true);
+        return;
+      }
 
       authMsg("가입하는 중이에요...", false);
 
       fetch(SB_URL + "/auth/v1/signup", {
         method: "POST",
         headers: { "apikey": SB_KEY, "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email, password: pw })
+        body: JSON.stringify({
+          email: email,
+          password: pw,
+          data: {
+            ad_sms:  document.getElementById("agreeAdSms").checked,     // 문자 수신 동의
+            ad_mail: document.getElementById("agreeAdMail").checked,    // 이메일 수신 동의
+            privacy_optional: document.getElementById("agreePrivacyOpt").checked
+          }
+        })
       })
       .then(function (res) { return res.json(); })
       .then(function (data) {
@@ -1711,6 +1997,7 @@
         authMsg("가입 신청이 끝났어요! " + email + " 메일함에서 확인 링크를 눌러 주세요 💌", false);
         document.getElementById("joinPw").value  = "";
         document.getElementById("joinPw2").value = "";
+        clearTerms();
       })
       .catch(function () {
         authMsg("서버에 연결할 수 없어요.", true);
