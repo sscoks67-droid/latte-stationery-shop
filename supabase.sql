@@ -32,3 +32,32 @@ create policy cart_update on public.carts for update to anon using (true) with c
 --  더 엄격하게 막고 싶으면 Supabase 의 익명 로그인(Anonymous sign-in)을 켜고
 --  정책을 auth.uid() 기준으로 바꾸면 됩니다.
 -- ============================================================
+
+
+-- ============================================================
+--  상품 목록 테이블  (2026-10-10 실행 완료, 상품 19개 저장됨)
+-- ============================================================
+
+create table if not exists public.products (
+  id          int primary key,                 -- 상품 번호 (화면에 보이는 순서)
+  name        text not null unique,            -- 상품 이름
+  price       int not null,                    -- 파는 값
+  old_price   int,                             -- 할인 전 값
+  category    text not null,                   -- pen / paper / art / etc
+  discount    int,                             -- 할인율 (%)
+  is_best     boolean not null default false,  -- BEST 표시 여부
+  image       text,                            -- 사진 파일 경로
+  sort_order  int,                             -- 보여줄 순서
+  created_at  timestamptz not null default now()
+);
+
+-- 누구나 볼 수 있지만, 바꾸는 것은 주인만 (대시보드에서)
+alter table public.products enable row level security;
+
+drop policy if exists product_read on public.products;
+create policy product_read on public.products for select to anon using (true);
+
+-- 상품을 추가하거나 값을 바꾸려면 대시보드 SQL Editor 에서 아래처럼 하세요.
+--   update public.products set price = 3200 where name = '파스텔 연필 세트';
+--   insert into public.products (id, name, price, old_price, category, discount, image, sort_order)
+--   values (20, '새 상품 이름', 5000, 6000, 'etc', 17, 'images/new.jpg', 20);
